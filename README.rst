@@ -11,8 +11,8 @@ Trello is a very simple web app that manages lists of cards on a board - it's li
 digital pinboard. You can create cards, comment on them, add attachments, move them
 from list to list. To make it possible to integrate with Trello, it fires off
 callback events whenever a user interacts with any entity within it. There is a
-huge list of available events. This project is designed to make it easy to capture
-those events, and it includes a canonical implementation of an event receiver that
+huge list of available events. **This project is designed to make it easy to capture
+those events**, and it includes a canonical implementation of an event receiver that
 pipes those events to HipChat, which is a hosted IRC-like chat app - exactly like
 Slack.
 
@@ -231,27 +231,3 @@ Django dev server during development.
 As for development itself - use virtualenv, install dependencies from requirements.txt
 and set up environment variables. If that doesn't mean anything to you - I'm afraid
 you have a lot to learn.
-
-Deploying to Heroku
--------------------
-
-TODO: write proper docs
-
-.. image:: https://www.herokucdn.com/deploy/button.png
-    :target: https://heroku.com/deploy?template=https://github.com/yunojuno/django-trello-webhooks
-
-This repo contains a test app can be deployed directly to Heroku using their Deploy button.
-This app will pipe Trello updates directly to a Hipchat room. You will need the following
-information in order to set up and configure the app:
-
-``TRELLO_API_KEY``, ``TRELLO_API_SECRET``, which you can get from here - https://trello.com/1/appKey/generate
-``HIPCHAT_API_TOKEN``, ``HIPCHAT_ROOM_ID``, which you can get from hipchat.com
-
-In addition, you will need to set the ``CALLBACK_DOMAIN`` environment setting once the app
-has been deployed. This should be set to the <app_name>.herokuapp.com domain, that is
-available once Heroku has deployed it.
-
-The recommended hacking method (IMO) is to set up the Heroku app, and use that as your
-main git remote - pull it down locally, change the relevant templates, push back to
-Heroku. If you're actually adding functionality, then please follow the **contributing**
-instructions above.
