@@ -14,7 +14,7 @@ from trello_webhooks.settings import (
     TRELLO_API_SECRET,
     CALLBACK_DOMAIN
 )
-from trello_webhooks.tests import get_sample_data
+from trello_webhooks.tests import get_sample_data, mock_http_request
 
 
 def mock_trello_sync(webhook, verb):
@@ -256,6 +256,11 @@ class WebhookModelTests(TestCase):
 
 class CallbackEventModelTest(TestCase):
 
+    @classmethod
+    def setUpClass(cls):
+        super(CallbackEventModelTest, cls).setUpClass()
+        cls.webhook = Webhook().save(sync=False)
+
     def test_default_properties(self):
         pass
 
@@ -265,53 +270,73 @@ class CallbackEventModelTest(TestCase):
     def test_action_data(self):
         ce = CallbackEvent()
         self.assertEqual(ce.action_data, None)
-        ce.event_payload = get_sample_data('createCard', 'text')
+        ce.event_payload = get_sample_data('createCard', 'json')
         self.assertEqual(ce.action_data, ce.event_payload['action']['data'])
 
     def test_member(self):
         ce = CallbackEvent()
         self.assertEqual(ce.action_data, None)
-        ce.event_payload = get_sample_data('createCard', 'text')
+        ce.event_payload = get_sample_data('createCard', 'json')
         self.assertEqual(ce.member, ce.event_payload['action']['memberCreator'])
 
     def test_board(self):
         ce = CallbackEvent()
         self.assertEqual(ce.board, None)
-        ce.event_payload = get_sample_data('createCard', 'text')
+        ce.event_payload = get_sample_data('createCard', 'json')
         self.assertEqual(ce.board, ce.event_payload['action']['data']['board'])
 
     def test_list(self):
         ce = CallbackEvent()
         self.assertEqual(ce.list, None)
-        ce.event_payload = get_sample_data('createCard', 'text')
+        ce.event_payload = get_sample_data('createCard', 'json')
         self.assertEqual(ce.list, ce.event_payload['action']['data']['list'])
 
     def test_card(self):
         ce = CallbackEvent()
         self.assertEqual(ce.card, None)
-        ce.event_payload = get_sample_data('createCard', 'text')
+        ce.event_payload = get_sample_data('createCard', 'json')
         self.assertEqual(ce.card, ce.event_payload['action']['data']['card'])
 
     def test_member_name(self):
         ce = CallbackEvent()
         self.assertEqual(ce.member_name, None)
-        ce.event_payload = get_sample_data('createCard', 'text')
+        ce.event_payload = get_sample_data('createCard', 'json')
         self.assertEqual(ce.member_name, ce.event_payload['action']['memberCreator']['fullName'])  # noqa
 
     def test_board_name(self):
         ce = CallbackEvent()
         self.assertEqual(ce.board_name, None)
-        ce.event_payload = get_sample_data('createCard', 'text')
+        ce.event_payload = get_sample_data('createCard', 'json')
         self.assertEqual(ce.board_name, ce.event_payload['action']['data']['board']['name'])  # noqa
 
     def test_list_name(self):
         ce = CallbackEvent()
         self.assertEqual(ce.list_name, None)
-        ce.event_payload = get_sample_data('createCard', 'text')
+        ce.event_payload = get_sample_data('createCard', 'json')
         self.assertEqual(ce.list_name, ce.event_payload['action']['data']['list']['name'])  # noqa
 
     def test_card_name(self):
         ce = CallbackEvent()
         self.assertEqual(ce.card_name, None)
-        ce.event_payload = get_sample_data('createCard', 'text')
+        ce.event_payload = get_sample_data('createCard', 'json')
         self.assertEqual(ce.card_name, ce.event_payload['action']['data']['card']['name'])  # noqa
+
+    def test_attachment_content_type(self):
+        ce = CallbackEvent(
+            webhook=self.webhook,
+            event_type='addAttachmentToCard',
+            event_payload=get_sample_data('addAttachmentToCard', 'json'),
+        )
+        self.assertNotIn('attachmentContentType', ce.action_data)
+        with mock_http_request(headers={'content-type': 'image/x-unique-test-type'}) as mock_request:
+            ce.save()
+        mock_request.assert_called_once_with(
+            'head',
+            ce.action_data['attachment']['url'],
+            allow_redirects=False,
+        )
+        self.assertIn('attachmentContentType', ce.action_data)
+        self.assertEqual(
+            'image/x-unique-test-type',
+            ce.action_data['attachmentContentType'],
+        )
