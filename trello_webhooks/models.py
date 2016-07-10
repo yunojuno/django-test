@@ -277,8 +277,8 @@ class CallbackEvent(models.Model):
         return response.headers.get('content-type')
 
     def save(self, *args, **kwargs):
-        """Update timestamp"""
-        if self.event_type == 'addAttachmentToCard':
+        """Update timestamp and resolve content type for attachments."""
+        if not self.pk and (self.event_type == 'addAttachmentToCard'):
             content_type = self.resolve_attachment_content_type()
             if content_type:
                 self.action_data['attachmentContentType'] = content_type
