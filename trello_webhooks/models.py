@@ -8,6 +8,7 @@ from django.template.loader import render_to_string, TemplateDoesNotExist
 from django.utils import timezone
 
 from jsonfield import JSONField
+import requests
 import trello
 
 from trello_webhooks import settings
@@ -266,8 +267,21 @@ class CallbackEvent(models.Model):
             (self.id, self.webhook_id, self.event_type)
         )
 
+    def resolve_attachment_content_type(self):
+        action_data = self.action_data
+        if 'attachment' not in action_data or 'url' not in action_data['attachment']:
+            return None
+        response = requests.head(self.action_data['attachment']['url'])
+        if response.status_code != 200:
+            return None
+        return response.headers.get('content-type')
+
     def save(self, *args, **kwargs):
         """Update timestamp"""
+        if self.event_type == 'addAttachmentToCard':
+            content_type = self.resolve_attachment_content_type()
+            if content_type:
+                self.action_data['attachmentContentType'] = content_type
         self.timestamp = timezone.now()
         super(CallbackEvent, self).save(*args, **kwargs)
         return self
