@@ -14,7 +14,7 @@ from trello_webhooks.settings import (
     TRELLO_API_SECRET,
     CALLBACK_DOMAIN
 )
-from trello_webhooks.tests import get_sample_data
+from trello_webhooks.tests import get_sample_data, mock_http_request
 
 
 def mock_trello_sync(webhook, verb):
@@ -321,19 +321,15 @@ class CallbackEventModelTest(TestCase):
         ce.event_payload = get_sample_data('createCard', 'json')
         self.assertEqual(ce.card_name, ce.event_payload['action']['data']['card']['name'])  # noqa
 
-    @mock.patch('requests.api.request')
-    def test_attachment_content_type(self, mock_request):
-        mock_request.return_value.status_code = 200
-        mock_request.return_value.headers = {
-            'content-type': 'image/x-unique-test-type'
-        }
+    def test_attachment_content_type(self):
         ce = CallbackEvent(
             webhook=self.webhook,
             event_type='addAttachmentToCard',
             event_payload=get_sample_data('addAttachmentToCard', 'json'),
         )
         self.assertNotIn('attachmentContentType', ce.action_data)
-        ce.save()
+        with mock_http_request(headers={'content-type': 'image/x-unique-test-type'}) as mock_request:
+            ce.save()
         mock_request.assert_called_once_with(
             'head',
             ce.action_data['attachment']['url'],
