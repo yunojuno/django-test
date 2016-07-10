@@ -224,11 +224,15 @@ class Webhook(models.Model):
         event = CallbackEvent(
             webhook=self,
             event_type=action,
-            event_payload=body_text
+            event_payload=payload
         ).save()
         self.touch()
         signals.callback_received.send(sender=self.__class__, event=event)
         return event
+
+
+def empty_dict():
+    return {}
 
 
 class CallbackEvent(models.Model):
@@ -240,7 +244,7 @@ class CallbackEvent(models.Model):
     # the Trello event type - moveCard, commentCard, etc.
     event_type = models.CharField(max_length=50)
     # the complete request payload, as JSON
-    event_payload = JSONField()
+    event_payload = JSONField(default=empty_dict)
 
     def __unicode__(self):
         if self.id:
