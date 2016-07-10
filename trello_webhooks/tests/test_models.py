@@ -256,6 +256,11 @@ class WebhookModelTests(TestCase):
 
 class CallbackEventModelTest(TestCase):
 
+    @classmethod
+    def setUpClass(cls):
+        super(CallbackEventModelTest, cls).setUpClass()
+        cls.webhook = Webhook().save(sync=False)
+
     def test_default_properties(self):
         pass
 
@@ -315,3 +320,27 @@ class CallbackEventModelTest(TestCase):
         self.assertEqual(ce.card_name, None)
         ce.event_payload = get_sample_data('createCard', 'json')
         self.assertEqual(ce.card_name, ce.event_payload['action']['data']['card']['name'])  # noqa
+
+    @mock.patch('requests.api.request')
+    def test_attachment_content_type(self, mock_request):
+        mock_request.return_value.status_code = 200
+        mock_request.return_value.headers = {
+            'content-type': 'image/x-unique-test-type'
+        }
+        ce = CallbackEvent(
+            webhook=self.webhook,
+            event_type='addAttachmentToCard',
+            event_payload=get_sample_data('addAttachmentToCard', 'json'),
+        )
+        self.assertNotIn('attachmentContentType', ce.action_data)
+        ce.save()
+        mock_request.assert_called_once_with(
+            'head',
+            ce.action_data['attachment']['url'],
+            allow_redirects=False,
+        )
+        self.assertIn('attachmentContentType', ce.action_data)
+        self.assertEqual(
+            'image/x-unique-test-type',
+            ce.action_data['attachmentContentType'],
+        )
