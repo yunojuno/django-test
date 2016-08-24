@@ -221,7 +221,7 @@ class Webhook(models.Model):
 
         """
         payload = json.loads(body_text)
-        action = payload['action']['type']        
+        action = payload['action']['type']
         event = CallbackEvent(
             webhook=self,
             event_type=action,
