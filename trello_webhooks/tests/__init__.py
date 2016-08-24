@@ -18,3 +18,10 @@ def get_sample_data(action, format_):
     )
     with open(_path, 'r') as f:
         return f.read() if format_ == 'text' else json.load(f)
+
+
+class MockRequestResponse():
+    """Very simple mock class for requests testing
+    """
+    def __init__(self, headers):
+        self.headers = headers
