@@ -14,7 +14,10 @@ from trello_webhooks.settings import (
     TRELLO_API_SECRET,
     CALLBACK_DOMAIN
 )
-from trello_webhooks.tests import get_sample_data
+from trello_webhooks.tests import (
+    get_sample_data,
+    MockRequestResponse
+)
 
 
 def mock_trello_sync(webhook, verb):
@@ -260,7 +263,15 @@ class CallbackEventModelTest(TestCase):
         pass
 
     def test_save(self):
-        pass
+        hook = Webhook(trello_model_id="M", auth_token="A").save(sync=False)
+        ce = CallbackEvent(
+            webhook=hook, 
+            event_type='Fake', 
+            event_payload='{}'
+        )
+        ce.save()
+        self.assertEqual(ce.webhook, hook)
+        self.assertEqual(ce.event_type, 'Fake')
 
     def test_action_data(self):
         ce = CallbackEvent()
@@ -315,3 +326,27 @@ class CallbackEventModelTest(TestCase):
         self.assertEqual(ce.card_name, None)
         ce.event_payload = get_sample_data('createCard', 'text')
         self.assertEqual(ce.card_name, ce.event_payload['action']['data']['card']['name'])  # noqa
+
+    @mock.patch('trello_webhooks.models.requests.get')
+    def test_card_attachment(self, mocked_requests_get):
+        # create a mock for requests
+        # only interested in the Content-Type
+        mr = MockRequestResponse({'Content-Type': 'image/png'})
+        mocked_requests_get.return_value = mr
+        hook = Webhook(trello_model_id="M", auth_token="A").save(sync=False)
+        ce = CallbackEvent(webhook=hook, event_type='addAttachmentToCard')
+        self.assertEqual(ce.attachment_content_type, None)
+        ce.event_payload = get_sample_data('addAttachmentToCard', 'text')
+        self.assertEqual(ce.attachment_content_type, 'image/png')
+        self.assertEqual(
+            ce.event_payload['action']['data']['attachment'].get(
+                'contentType'
+            ),
+            None
+        )
+        self.assertEqual(ce.event_type, 'addAttachmentToCard')
+        ce.save()
+        self.assertEqual(
+            ce.event_payload['action']['data']['attachment']['contentType'],
+            'image/png'
+        )
