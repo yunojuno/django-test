@@ -10,6 +10,7 @@ from django.utils import timezone
 
 from jsonfield import JSONField
 import trello
+import requests
 
 from trello_webhooks import settings
 from trello_webhooks import signals
@@ -264,8 +265,9 @@ class CallbackEvent(models.Model):
         )
 
     def save(self, *args, **kwargs):
-        """Update timestamp"""
+        """Update timestamp and add content-type of attachment to action data"""
         self.timestamp = timezone.now()
+        self.add_attachment_content_type()
         super(CallbackEvent, self).save(*args, **kwargs)
         return self
 
@@ -318,6 +320,19 @@ class CallbackEvent(models.Model):
     def template(self):
         """Return full path to render template, based on event_type."""
         return 'trello_webhooks/%s.html' % self.event_type
+
+    def add_attachment_content_type(self):
+        """Add content-type of attachment to action data"""
+        if self.event_type == 'addAttachmentToCard':
+            attachment = self.action_data.get('attachment', None)
+            if attachment and attachment.get('url', None):
+                try:
+                    attachment['content_type'] = requests.head(attachment['url']).headers.get('content-type', '')
+                except requests.RequestException as request_exception:
+                    logger.warning(
+                        u"Got an exception %r while trying to resolve attachment's content-type on url: %s" %
+                        (request_exception, attachment['url'])
+                    )
 
     def render(self):
         """Render the event using an HTML template.
