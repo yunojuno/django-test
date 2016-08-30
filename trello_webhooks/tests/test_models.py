@@ -315,3 +315,19 @@ class CallbackEventModelTest(TestCase):
         self.assertEqual(ce.card_name, None)
         ce.event_payload = get_sample_data('createCard', 'text')
         self.assertEqual(ce.card_name, ce.event_payload['action']['data']['card']['name'])  # noqa
+
+    def test_add_attachment(self):
+        ce = CallbackEvent()
+        ce.event_payload = get_sample_data('addAttachmentToCard', 'json')
+        ce.event_type = ce.event_payload['action']['type']
+        ce.add_attachment_content_type()
+        self.assertEqual(ce.action_data['attachment']['content_type'], 'image/png')
+
+    def test_add_attachment_request_exception(self):
+        ce = CallbackEvent()
+        ce.event_payload = get_sample_data('addAttachmentToCard', 'json')
+        ce.event_payload['action']['data']['attachment']['url'] = 'http://example'  # noqa
+        ce.event_type = ce.event_payload['action']['type']
+        ce.add_attachment_content_type()
+
+

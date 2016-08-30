@@ -1,0 +1,78 @@
+{
+    "action": {
+        "id": "57c4ce756349b25761440e0d",
+        "idMemberCreator": "55c0acbaf232d402769415ca",
+        "data": {
+            "board": {
+                "shortLink": "NGmmEfXU",
+                "name": "Projects",
+                "id": "55c0b1b5c736b99032525c1f"
+            },
+            "card": {
+                "shortLink": "tjpJRWhi",
+                "idShort": 13,
+                "name": "wh223213",
+                "id": "57c427b796cfa3f81f3ea4f2"
+            },
+            "attachment": {
+                "previewUrl2x": "https://trello-attachments.s3.amazonaws.com/57c427b796cfa3f81f3ea4f2/188x34/f5f32702f51cdffa46f22e7bc3dcdda2/vk.png",
+                "previewUrl": "https://trello-attachments.s3.amazonaws.com/57c427b796cfa3f81f3ea4f2/188x34/f5f32702f51cdffa46f22e7bc3dcdda2/vk.png",
+                "url": "https://trello-attachments.s3.amazonaws.com/57c427b796cfa3f81f3ea4f2/188x34/f5f32702f51cdffa46f22e7bc3dcdda2/vk.png",
+                "name": "vk.png",
+                "id": "57c4ce746349b25761440e07"
+            }
+        },
+        "type": "addAttachmentToCard",
+        "date": "2016-08-30T00:08:21.015Z",
+        "memberCreator": {
+            "id": "55c0acbaf232d402769415ca",
+            "avatarHash": null,
+            "fullName": "Fullname",
+            "initials": "N",
+            "username": "username"
+        }
+    },
+    "model": {
+        "id": "55c0b1b5c736b99032525c1f",
+        "name": "Projects",
+        "desc": "",
+        "descData": null,
+        "closed": false,
+        "idOrganization": null,
+        "pinned": false,
+        "url": "https://trello.com/b/NGmmEfXU/projects",
+        "shortUrl": "https://trello.com/b/NGmmEfXU",
+        "prefs": {
+            "permissionLevel": "private",
+            "voting": "disabled",
+            "comments": "members",
+            "invitations": "members",
+            "selfJoin": false,
+            "cardCovers": true,
+            "cardAging": "regular",
+            "calendarFeedEnabled": false,
+            "background": "blue",
+            "backgroundImage": null,
+            "backgroundImageScaled": null,
+            "backgroundTile": false,
+            "backgroundBrightness": "dark",
+            "backgroundColor": "#0079BF",
+            "canBePublic": true,
+            "canBeOrg": true,
+            "canBePrivate": true,
+            "canInvite": true
+        },
+        "labelNames": {
+            "green": "",
+            "yellow": "",
+            "orange": "",
+            "red": "",
+            "purple": "",
+            "blue": "",
+            "sky": "",
+            "lime": "",
+            "pink": "",
+            "black": ""
+        }
+    }
+}
