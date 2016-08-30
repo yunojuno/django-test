@@ -7,8 +7,8 @@ def render_attachment(attachment):
     """Render attachment depending on it's content-type"""
     content_type = attachment.get('content_type', '')
     if content_type.startswith('image/'):
-        return format_html('<a href="{url}"><img src="{url}"></a>',
+        return format_html(u'<a href="{url}"><img src="{url}"></a>',
                            **attachment)
     else:
-        return format_html('<a href="{url}">{name}</a>',
+        return format_html(u'<a href="{url}">{name}</a>',
                            **attachment)
