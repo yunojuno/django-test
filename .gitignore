@@ -33,6 +33,7 @@ htmlcov/
 .cache
 nosetests.xml
 coverage.xml
+coverage_reports
 
 # Translations
 *.mo
@@ -51,5 +52,8 @@ coverage.xml
 
 # Sphinx documentation
 docs/_build/
+
+# Development
+.env
 
 test_app/static
