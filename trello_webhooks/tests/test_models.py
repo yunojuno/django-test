@@ -257,7 +257,12 @@ class WebhookModelTests(TestCase):
 class CallbackEventModelTest(TestCase):
 
     def test_default_properties(self):
-        pass
+        ce = CallbackEvent()
+        self.assertIsNone(ce.id)
+        self.assertIsNone(ce.webhook_id)
+        self.assertIsNone(ce.timestamp)
+        self.assertEqual(ce.event_type, '')
+        self.assertEqual(ce.event_payload, {})
 
     def test_save(self):
         pass
