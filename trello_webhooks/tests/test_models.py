@@ -8,6 +8,7 @@ from django.test import TestCase
 
 import trello
 
+from trello_webhooks import attachments
 from trello_webhooks.models import Webhook, CallbackEvent
 from trello_webhooks.settings import (
     TRELLO_API_KEY,
@@ -264,8 +265,13 @@ class CallbackEventModelTest(TestCase):
         self.assertEqual(ce.event_type, '')
         self.assertEqual(ce.event_payload, {})
 
-    def test_save(self):
-        pass
+    @mock.patch.object(CallbackEvent, 'resolve_attachment_content_type')
+    def test_save(self, mocked_resolve_attachment_content_type):
+        webhook = Webhook().save(sync=False)
+        ce = CallbackEvent(webhook=webhook)
+        ce.save()
+        self.assertTrue(ce.timestamp)
+        mocked_resolve_attachment_content_type.assert_called_once_with
 
     def test_action_data(self):
         ce = CallbackEvent()
@@ -278,6 +284,12 @@ class CallbackEventModelTest(TestCase):
         self.assertEqual(ce.action_data, None)
         ce.event_payload = get_sample_data('createCard', 'text')
         self.assertEqual(ce.member, ce.event_payload['action']['memberCreator'])
+
+    def test_attachment(self):
+        ce = CallbackEvent()
+        self.assertEqual(ce.attachment, None)
+        ce.event_payload = get_sample_data('addAttachmentToCard', 'text')
+        self.assertEqual(ce.attachment, ce.event_payload['action']['data']['attachment'])
 
     def test_board(self):
         ce = CallbackEvent()
@@ -320,3 +332,25 @@ class CallbackEventModelTest(TestCase):
         self.assertEqual(ce.card_name, None)
         ce.event_payload = get_sample_data('createCard', 'text')
         self.assertEqual(ce.card_name, ce.event_payload['action']['data']['card']['name'])  # noqa
+
+    @mock.patch.object(attachments, 'calculate_content_type')
+    def test_resolve_attachment_content_type_with_no_attachment(
+            self, mocked_calculate_content_type):
+        ce = CallbackEvent()
+        attachment_before_call = ce.attachment
+        ce.resolve_attachment_content_type()
+        self.assertEqual(attachment_before_call, ce.attachment)
+        self.assertFalse(mocked_calculate_content_type.called)
+
+    @mock.patch.object(attachments, 'calculate_content_type')
+    def test_resolve_attachment_content_type_with_attachment(
+            self, mocked_calculate_content_type):
+        mocked_calculate_content_type.return_value = 'image/gif'
+        ce = CallbackEvent()
+        ce.event_payload = get_sample_data('addAttachmentToCard', 'text')
+        mimetype_before = ce.attachment.get('mimeType')
+        self.assertIsNone(mimetype_before)
+        ce.resolve_attachment_content_type()
+        mimetype_after = ce.attachment.get('mimeType')
+        self.assertEqual(mimetype_after, 'image/gif')
+        self.assertTrue(mocked_calculate_content_type.called)

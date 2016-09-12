@@ -11,13 +11,15 @@ from django.utils import timezone
 from jsonfield import JSONField
 import trello
 
+from trello_webhooks import attachments
 from trello_webhooks import settings
 from trello_webhooks import signals
+
 
 logger = logging.getLogger(__name__)
 
 
-# free-floating function to get a new trello.TrelloClient object
+# Free-floating function to get a new trello.TrelloClient object
 # using the stored settings
 def get_trello_client(api_key=settings.TRELLO_API_KEY,
                       api_secret=settings.TRELLO_API_SECRET,
@@ -266,6 +268,7 @@ class CallbackEvent(models.Model):
     def save(self, *args, **kwargs):
         """Update timestamp"""
         self.timestamp = timezone.now()
+        self.resolve_attachment_content_type()
         super(CallbackEvent, self).save(*args, **kwargs)
         return self
 
@@ -278,6 +281,11 @@ class CallbackEvent(models.Model):
     def member(self):
         """Returns 'memberCreator' JSON extracted from event_payload."""
         return self.event_payload.get('action', {}).get('memberCreator')
+
+    @property
+    def attachment(self):
+        """Returns the 'attachment' node from the payload."""
+        return self.action_data.get('attachment') if self.action_data else None
 
     @property
     def board(self):
@@ -347,3 +355,17 @@ class CallbackEvent(models.Model):
                 self.template
             )
             return None
+
+    def resolve_attachment_content_type(self):
+        """Calculates and sets the content-type of an attachment.
+
+        Trello seems to _sometimes_ return the `mimeType` key; when it does, we
+        use it and when it doesn't, we fire off a request to find out what type
+        of content it is.
+        """
+        if not self.attachment or self.attachment.get('mimeType'):
+            return
+        url = self.attachment.get('url', '')
+        content_type = attachments.calculate_content_type(url)
+        if content_type:
+            self.event_payload['action']['data']['attachment']['mimeType'] = content_type
