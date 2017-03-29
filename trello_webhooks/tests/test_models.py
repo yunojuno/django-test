@@ -282,13 +282,17 @@ class WebhookModelTests(TestCase):
 
         hook._trello_sync('')
         self.assertEqual(hook.trello_id, 1)
-        self.assertFalset(hook.is_active)
+        self.assertFalse(hook.is_active)
 
 
 class CallbackEventModelTest(TestCase):
 
     def test_default_properties(self):
-        pass
+        ce = CallbackEvent()
+
+        self.assertEqual(ce.timestamp, None)
+        self.assertEqual(ce.event_payload, {})
+        self.assertEqual(ce.event_type, '')
 
     @mock.patch('trello_webhooks.models.requests.get', mock_request_get)
     def test_save(self):
@@ -363,3 +367,15 @@ class CallbackEventModelTest(TestCase):
         ce = CallbackEvent()
         ce.event_payload = get_sample_data('addAttachmentToCard', 'text')
         self.assertEqual(ce.get_attachment_content_type(), 'image/png')
+
+    def test__unicode__(self):
+        hook = Webhook().save(sync=False)
+        hook.id = 1
+
+        ce = CallbackEvent(webhook=hook)
+        ce.event_type = 'testEvent'
+
+        self.assertEqual(ce.__unicode__(), "CallbackEvent: 'testEvent' raised by webhook 1.")
+
+        ce.id = 1
+        self.assertEqual(ce.__unicode__(), "CallbackEvent 1: 'testEvent' raised by webhook 1.")
