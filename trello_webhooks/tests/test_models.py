@@ -53,7 +53,10 @@ def mock_trello_sync_x(webhook, verb):
 def mock_get_client(obj):
     class MockClient:
         def fetch_json(self, url, http_method='verb', post_args={}):
-            return {'id': 1, 'active': True}
+            if http_method == 'test_active':
+                return {'id': 1, 'active': True}
+            else:
+                return {'id': 1, 'active': False}
     return MockClient()
 
 
@@ -273,9 +276,13 @@ class WebhookModelTests(TestCase):
     def test__trello_sync(self):
         hook = Webhook()
 
-        hook._trello_sync('verb')
+        hook._trello_sync('test_active')
         self.assertEqual(hook.trello_id, 1)
         self.assertTrue(hook.is_active)
+
+        hook._trello_sync('')
+        self.assertEqual(hook.trello_id, 1)
+        self.assertFalset(hook.is_active)
 
 
 class CallbackEventModelTest(TestCase):
