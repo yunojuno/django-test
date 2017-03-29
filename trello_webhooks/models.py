@@ -265,8 +265,11 @@ class CallbackEvent(models.Model):
         )
 
     def save(self, *args, **kwargs):
-        """Update timestamp"""
+        """Update timestamp and add content type"""
         self.timestamp = timezone.now()
+        content_type = self.get_attachment_content_type()
+        if content_type:
+            self.event_payload['action']['data']['content_type'] = content_type
         super(CallbackEvent, self).save(*args, **kwargs)
         return self
 
