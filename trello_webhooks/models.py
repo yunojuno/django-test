@@ -9,6 +9,7 @@ from django.template.loader import render_to_string
 from django.utils import timezone
 
 from jsonfield import JSONField
+import requests
 import trello
 
 from trello_webhooks import settings
@@ -268,6 +269,12 @@ class CallbackEvent(models.Model):
         self.timestamp = timezone.now()
         super(CallbackEvent, self).save(*args, **kwargs)
         return self
+
+    def get_attachment_content_type(self):
+        """Get attachment content type."""
+        attachment = self.event_payload.get('action', {}).get('data', {}).get('attachment')
+        if attachment:
+            return requests.get(attachment.get('url')).headers.get('content-type')
 
     @property
     def action_data(self):
