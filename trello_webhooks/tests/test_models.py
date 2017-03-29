@@ -275,7 +275,7 @@ class CallbackEventModelTest(TestCase):
         ce.event_payload = get_sample_data('addAttachmentToCard', 'text')
         ce.save()
 
-        self.assertEqual(ce.action_data['content_type'], 'image/png')
+        self.assertEqual(ce.action_data['attachment']['content_type'], 'image/png')
 
     def test_action_data(self):
         ce = CallbackEvent()

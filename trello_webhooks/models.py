@@ -269,7 +269,7 @@ class CallbackEvent(models.Model):
         self.timestamp = timezone.now()
         content_type = self.get_attachment_content_type()
         if content_type:
-            self.event_payload['action']['data']['content_type'] = content_type
+            self.event_payload['action']['data']['attachment']['content_type'] = content_type
         super(CallbackEvent, self).save(*args, **kwargs)
         return self
 
