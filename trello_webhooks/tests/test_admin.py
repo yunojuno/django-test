@@ -30,3 +30,12 @@ class CallbackEventAdminTests(TestCase):
         self.assertIsNotNone(self.admin.rendered(self.event))
         self.event.event_type = "X"
         self.assertIsNone(self.admin.rendered(self.event))
+
+    def test_payload(self):
+        class MockInstance:
+            event_payload = {'test': 'payload'}
+
+        result = self.admin.payload_(MockInstance())
+        self.assertIn('code', result)
+        self.assertIn('test', result)
+        self.assertIn('payload', result)
