@@ -50,6 +50,17 @@ def mock_trello_sync_x(webhook, verb):
     return webhook
 
 
+def mock_get_client(obj):
+    class MockClient:
+        def fetch_json(self, url, http_method='verb', post_args={}):
+            return {'id': 1, 'active': True}
+    return MockClient()
+
+
+def mock_post_args(obj):
+    return {}
+
+
 def mock_request_get(url):
     mock_response = mock.MagicMock()
     mock_response.headers = {'content-type': 'image/png'}
@@ -256,6 +267,15 @@ class WebhookModelTests(TestCase):
         self.assertEqual(event.webhook, hook)
         self.assertEqual(event.event_payload, payload)
         # other CallbackEvent properties are tested in CallbackEvent tests
+
+    @mock.patch('trello_webhooks.models.Webhook.get_client', mock_get_client)
+    @mock.patch('trello_webhooks.models.Webhook.post_args', mock_post_args)
+    def test__trello_sync(self):
+        hook = Webhook()
+
+        hook._trello_sync('verb')
+        self.assertEqual(hook.trello_id, 1)
+        self.assertTrue(hook.is_active)
 
 
 class CallbackEventModelTest(TestCase):
