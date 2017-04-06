@@ -1,6 +1,6 @@
 **YunoJuno Platform Developer Challenge**
 
-**UPDATE** For the avoidance of any doubt, you shouldn't need to understand Trello or HipChat to solve this. The contents of the solution are in the comments below. The test itself is simple, and what we want to see is _how_ you work with an existing codebase. Code, comments, commit notes, commit contents, tests, pull requests - everything that shows us that you'll fit in with the YJ team. 
+**UPDATE** For the avoidance of any doubt, you shouldn't need to understand Trello or HipChat to solve this. The contents of the solution are in the comments below. The test itself is simple, and what we want to see is _how_ you work with an existing codebase. Code, comments, commit notes, commit contents, tests, pull requests - everything that shows us that you'll fit in with the YJ team. If in any doubt, refer to this document for more details on how we work - https://yunojuno.github.io/test-docs/contributing/.
 
 _This challenge is a pre-requisite for anyone applying to YunoJuno for a Django-related role. It is designed to demonstrate familiarity with Git and Django, and to show how someone codes. Before reading this you should read the main repo README file for background on the project._
 
