@@ -2,17 +2,16 @@
 import json
 import logging
 
+import requests
+import trello
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.template.base import TemplateDoesNotExist
 from django.template.loader import render_to_string
 from django.utils import timezone
-
 from jsonfield import JSONField
-import trello
 
-from trello_webhooks import settings
-from trello_webhooks import signals
+from trello_webhooks import settings, signals
 
 logger = logging.getLogger(__name__)
 
@@ -268,6 +267,13 @@ class CallbackEvent(models.Model):
         self.timestamp = timezone.now()
         super(CallbackEvent, self).save(*args, **kwargs)
         return self
+
+    @property
+    def attachment_content_type(self):
+        attachment = self.event_payload.get('action', {}).get('data', {}).get('attachment')
+        if attachment:
+            url = attachment['url']
+            return requests.head(url).headers.get('content-type', 'application/octet-stream')
 
     @property
     def action_data(self):
