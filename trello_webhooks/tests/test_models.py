@@ -260,6 +260,26 @@ class CallbackEventModelTest(TestCase):
     def test_default_properties(self):
         pass
 
+    def test_str_repr(self):
+        hook = Webhook().save(sync=False)
+        event = CallbackEvent(webhook=hook, event_type='a')
+        event_unicode = u"CallbackEvent: '%s' raised by webhook %s." % (
+            event.event_type, event.webhook_id)
+        event_repr = u"<CallbackEvent id=%s, webhook=%s, event_type='%s'>" % (
+            event.id, event.webhook_id, event.event_type)
+        self.assertEqual(str(event), event_unicode)
+        self.assertEqual(unicode(event), event_unicode)
+        self.assertEqual(repr(event), event_repr)
+        # now with an id
+        event.id = 1
+        event_repr = u"<CallbackEvent id=%s, webhook=%s, event_type='%s'>" % (
+            event.id, event.webhook_id, event.event_type)
+        event_unicode = u"CallbackEvent %i: '%s' raised by webhook %s." % (
+            event.id, event.event_type, hook.id)
+        self.assertEqual(str(event), event_unicode)
+        self.assertEqual(unicode(event), event_unicode)
+        self.assertEqual(repr(event), event_repr)
+
     @mock.patch('trello_webhooks.models.requests.head', mock_requests_head)
     def test_save(self):
         hook = Webhook().save(sync=False)
