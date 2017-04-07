@@ -1,19 +1,14 @@
 # -*- coding: utf-8 -*-
 import datetime
 import json
-import mock
 
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 
-import trello
-
-from trello_webhooks.models import Webhook, CallbackEvent
-from trello_webhooks.settings import (
-    TRELLO_API_KEY,
-    TRELLO_API_SECRET,
-    CALLBACK_DOMAIN
-)
+import mock
+from trello_webhooks.models import CallbackEvent, Webhook
+from trello_webhooks.settings import (CALLBACK_DOMAIN, TRELLO_API_KEY,
+                                      TRELLO_API_SECRET)
 from trello_webhooks.tests import get_sample_data
 
 
@@ -50,6 +45,12 @@ def mock_trello_sync_x(webhook, verb):
     webhook.trello_id = ''
     webhook.is_active = False
     return webhook
+
+
+def mock_requests_head(_url):
+    mock_response = mock.MagicMock()
+    mock_response.headers = {'content-type': 'video/webm'}
+    return mock_response
 
 
 class WebhookModelTests(TestCase):
@@ -315,3 +316,8 @@ class CallbackEventModelTest(TestCase):
         self.assertEqual(ce.card_name, None)
         ce.event_payload = get_sample_data('createCard', 'text')
         self.assertEqual(ce.card_name, ce.event_payload['action']['data']['card']['name'])  # noqa
+
+    def test_attachment_content_type(self):
+        ce = CallbackEvent()
+        ce.event_payload = get_sample_data('addAttachmentToCard', 'text')
+        self.assertEqual(ce.attachment_content_type, 'video/webm')
