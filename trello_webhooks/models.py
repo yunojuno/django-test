@@ -263,17 +263,24 @@ class CallbackEvent(models.Model):
         )
 
     def save(self, *args, **kwargs):
-        """Update timestamp"""
+        """Update timestamp and add attachment content type"""
         self.timestamp = timezone.now()
+
+        content_type = self.attachment_content_type
+        if content_type:
+            self.action_data['attachment']['content_type'] = content_type
+
         super(CallbackEvent, self).save(*args, **kwargs)
         return self
 
     @property
     def attachment_content_type(self):
-        attachment = self.action_data.get('attachment')
-        if attachment:
-            url = attachment['url']
-            return requests.head(url).headers.get('content-type', 'application/octet-stream')
+        data = self.action_data
+        if data:
+            attachment = data.get('attachment')
+            if attachment:
+                url = attachment['url']
+                return requests.head(url).headers.get('content-type', 'application/octet-stream')
 
     @property
     def action_data(self):
