@@ -270,7 +270,7 @@ class CallbackEvent(models.Model):
 
     @property
     def attachment_content_type(self):
-        attachment = self.event_payload.get('action', {}).get('data', {}).get('attachment')
+        attachment = self.action_data.get('attachment')
         if attachment:
             url = attachment['url']
             return requests.head(url).headers.get('content-type', 'application/octet-stream')
