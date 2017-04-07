@@ -260,8 +260,19 @@ class CallbackEventModelTest(TestCase):
     def test_default_properties(self):
         pass
 
+    @mock.patch('trello_webhooks.models.requests.head', mock_requests_head)
     def test_save(self):
-        pass
+        hook = Webhook().save(sync=False)
+        event = CallbackEvent(webhook=hook)
+
+        self.assertEqual(event.timestamp, None)
+        self.assertEqual(event.event_payload, {})
+        self.assertEqual(event.event_type, '')
+
+        event.event_payload = get_sample_data('addAttachmentToCard', 'text')
+        event.save()
+
+        self.assertEqual(event.action_data['attachment']['content_type'], 'video/webm')
 
     def test_action_data(self):
         ce = CallbackEvent()
