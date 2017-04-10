@@ -1,0 +1,3 @@
+{% load trello_render_tags %}
+<strong>{{action.memberCreator.initials}}</strong> added attachment {{ action.data.attachment|render_card_attachment }}
+{% include 'trello_webhooks/partials/card_link.html' %}
