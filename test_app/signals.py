@@ -29,15 +29,14 @@ def get_supported_events():
 
 
 @receiver(callback_received, dispatch_uid="callback_received")
-def on_callback_received(sender, **kwargs):
+def on_callback_received(sender, event, **kwargs):
     # if a template exists for the event_type, then send the output
     # as a normal notification, in 'yellow'
     # if no template exists, send a notification in 'red'
-    event = kwargs.pop('event')
     html = event.render()
     if settings.HIPCHAT_ENABLED:
         logger.debug(
-            u"Message sent to HipChat [%s]: %r",
+            u"Message sent to HipChat [%s]: %r from %s",
             send_to_hipchat(html), event, event.webhook
         )
     else:
