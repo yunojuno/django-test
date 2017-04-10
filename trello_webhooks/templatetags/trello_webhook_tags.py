@@ -70,7 +70,7 @@ def render_attachment(action):
     attachment = action.get('data', {}).get('attachment', {})
 
     if attachment.get('content_type', '').startswith('image/'):
-        attachment_tag = u'<img src="{}"/>'.format(action['data']['attachment']['url'])
+        attachment_tag = u'<img src="{}"/>'.format(attachment.get('url'))
     else:
         attachment_tag = attachment.get('name')
 

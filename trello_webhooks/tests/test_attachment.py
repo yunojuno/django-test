@@ -9,6 +9,7 @@ from trello_webhooks.models import Webhook, CallbackEvent
 from trello_webhooks.tests import get_sample_data
 import mock
 from requests import Response
+from bs4 import BeautifulSoup
 
 
 def _get_response(content_type):
@@ -54,14 +55,15 @@ class AttachmentTests(TestCase):
         """
         Setup test case
         Returns: None
-
         """
         self.payload = {'auth_token': 'A', 'trello_model_id': '123'}
         self.url = reverse('trello_callback_url', kwargs=self.payload)
         self.event_type = 'addAttachmentToCard'
+        self.image_tag_name = 'img'
+        self.image_src_attr = 'src'
 
     @mock.patch('requests.head', mock_image_request)
-    def test_render_attachment(self):
+    def test_render_attachment_image(self):
         """
         Test Post Card with attachment (png)
         <img> tag must be included in rendered html
@@ -72,22 +74,17 @@ class AttachmentTests(TestCase):
         self.assertEqual(CallbackEvent.objects.count(), 1)
 
         callback_event = CallbackEvent.objects.get()
-        # Check if <img> tag rendered
-        self.assertIn('<img src="{}"/>'.format(callback_event.attachment['url']), callback_event.render())
-
-    @mock.patch('requests.head', mock_image_request)
-    def test_attachment_content_type(self):
-        """
-        Test attachment Content Type
-        Content Type should be image/jpeg
-        Returns:
-            None
-        """
-        self._send_webhook()
-
-        callback_event = CallbackEvent.objects.get()
         # Check content type - must be image/jpeg
         self.assertEquals(callback_event.attachment['content_type'], 'image/jpeg')
+
+        # load rendered html as BeautifulSoap instance
+        rendered_html = BeautifulSoup(callback_event.render())
+        img_tag = rendered_html.find(self.image_tag_name)
+
+        # Check if <img> tag rendered
+        self.assertIsNot(img_tag, None)
+        # Check src attribute of the img tag
+        self.assertEquals(img_tag.get(self.image_src_attr), callback_event.attachment['url'])
 
     @mock.patch('requests.head', mock_pdf_request)
     def test_attachment_not_image(self):
@@ -100,8 +97,13 @@ class AttachmentTests(TestCase):
         self._send_webhook()
 
         callback_event = CallbackEvent.objects.get()
+        # content type is not image
+        self.assertNotIn('image', callback_event.attachment['content_type'])
+
+        rendered_html = BeautifulSoup(callback_event.render())
+        img_tag = rendered_html.find(self.image_tag_name)
         # img tag shouldn't be rendered
-        self.assertNotIn('<img', callback_event.render())
+        self.assertIs(img_tag, None)
 
     def _send_webhook(self):
         """
