@@ -267,7 +267,7 @@ class CallbackEvent(models.Model):
     def save(self, *args, **kwargs):
         """Update timestamp"""
         self.timestamp = timezone.now()
-        self.resolve_content_type()
+        self.set_attachment_content_type()
         super(CallbackEvent, self).save(*args, **kwargs)
         return self
 
@@ -355,12 +355,12 @@ class CallbackEvent(models.Model):
             )
             return None
 
-    def resolve_content_type(self):
+    def set_attachment_content_type(self):
         """
         Resolve Attachment content type
-        Make HEAD request to
+        Make HEAD request to find out content type
         Returns:
-            attachment content type (string) or None
+            None
         """
         attachment = self.attachment
 

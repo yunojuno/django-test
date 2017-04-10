@@ -67,8 +67,11 @@ def render_attachment(action):
     Returns:
         safe string (HTML)
     """
-    if action.get('data', {}).get('attachment', {}).get('content_type', '').startswith('image/'):
-        attachment = u'<img src="{}"/>'.format(action['data']['attachment']['url'])
+    attachment = action.get('data', {}).get('attachment', {})
+
+    if attachment.get('content_type', '').startswith('image/'):
+        attachment_tag = u'<img src="{}"/>'.format(action['data']['attachment']['url'])
     else:
-        attachment = action['data']['attachment']['name']
-    return mark_safe(attachment)
+        attachment_tag = attachment.get('name')
+
+    return mark_safe(attachment_tag)
