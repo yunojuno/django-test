@@ -1,6 +1,7 @@
 # # -*- coding: utf-8 -*-
 import json
 import logging
+import mimetypes
 
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -246,12 +247,12 @@ class CallbackEvent(models.Model):
         if self.id:
             return (
                 "CallbackEvent %i: '%s' raised by webhook %s." %
-                (self.id, self.event_type, self.webhook.id)
+                (self.id, self.event_type, self.webhook_id)
             )
         else:
             return (
                 "CallbackEvent: '%s' raised by webhook %s." %
-                (self.event_type, self.webhook.id)
+                (self.event_type, self.webhook_id)
             )
 
     def __str__(self):
@@ -264,8 +265,14 @@ class CallbackEvent(models.Model):
         )
 
     def save(self, *args, **kwargs):
-        """Update timestamp"""
+        """Updates timestamp and sets attachment MIME type"""
         self.timestamp = timezone.now()
+
+        if self.attachment:
+            # try to detect attachment's mime type and store it along event_payload
+            mime_type = self.guess_attachment_mime_type()
+            self.event_payload['action']['data']['attachment']['mimeType'] = mime_type
+
         super(CallbackEvent, self).save(*args, **kwargs)
         return self
 
@@ -293,6 +300,35 @@ class CallbackEvent(models.Model):
     def card(self):
         """Returns 'card' JSON extracted from event_payload."""
         return self.action_data.get('card') if self.action_data else None
+
+    @property
+    def attachment(self):
+        """Returns 'attachment' JSON extracted from event_payload."""
+        return self.action_data.get('attachment') if self.action_data else None
+
+    @property
+    def attachment_mime_type(self):
+        """
+        Returns 'attachment.mimeType' value extracted from event_payload.
+
+        Note, this value is compute on save and stored in the original `event_payload`
+        (just to avoid any recalculations/extra http requests on property access).
+        """
+        return self.attachment.get('mimeType') if self.attachment else None
+
+    def guess_attachment_mime_type(self):
+        """
+        Returns attachment's MIME type (e.g. 'image/png', etc)
+        or `None` if the type can’t be guessed (missing or unknown suffix)
+        """
+        attachment_url = self.attachment.get('url') if self.attachment else None
+
+        if attachment_url:
+            mime_type, __ = mimetypes.guess_type(attachment_url)
+            logger.debug('%s contains attachment of %s type.', self, mime_type)
+            return mime_type
+
+        return None
 
     @property
     def member_name(self):

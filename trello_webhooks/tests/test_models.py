@@ -6,8 +6,6 @@ import mock
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 
-import trello
-
 from trello_webhooks.models import Webhook, CallbackEvent
 from trello_webhooks.settings import (
     TRELLO_API_KEY,
@@ -315,3 +313,44 @@ class CallbackEventModelTest(TestCase):
         self.assertEqual(ce.card_name, None)
         ce.event_payload = get_sample_data('createCard', 'text')
         self.assertEqual(ce.card_name, ce.event_payload['action']['data']['card']['name'])  # noqa
+
+    def test_attachment(self):
+        ce = CallbackEvent()
+        self.assertEqual(ce.attachment, None)
+        ce.event_payload = get_sample_data('addAttachmentToCard__image', 'text')
+        self.assertEqual(ce.attachment, ce.event_payload['action']['data']['attachment'])
+
+    def test_guessing_attachment_mime_type(self):
+        ce = CallbackEvent()
+        self.assertEqual(ce.guess_attachment_mime_type(), None)
+
+        ce.event_payload = get_sample_data('addAttachmentToCard__image', 'text')
+        with mock.patch('mimetypes.guess_type', return_value=('image/icon', None)):
+            self.assertEqual(ce.guess_attachment_mime_type(), 'image/icon')
+
+    def test_setting_attachment_mime_type_on_save(self):
+        w = Webhook().save(sync=False)
+        with mock.patch('mimetypes.guess_type', return_value=('image/png', None)):
+            ce = CallbackEvent.objects.create(
+                webhook=w,
+                event_type='addAttachmentToCard',
+                event_payload=get_sample_data('addAttachmentToCard__image', 'text')
+            )
+
+        self.assertEqual(ce.event_payload['action']['data']['attachment']['mimeType'], 'image/png')
+        # the save value can be accessed via `attachment_mime_type` property
+        self.assertEqual(ce.attachment_mime_type, 'image/png')
+
+    def test_incorrect_attachment_mime_type(self):
+        w = Webhook().save(sync=False)
+
+        # if attachment's MIME type is incorrect, `mimetypes.guess_type` will return `(None, None)`
+        with mock.patch('mimetypes.guess_type', return_value=(None, None)):
+            ce = CallbackEvent.objects.create(
+                webhook=w,
+                event_type='addAttachmentToCard',
+                event_payload=get_sample_data('addAttachmentToCard__image', 'text')
+            )
+
+        self.assertEqual(ce.event_payload['action']['data']['attachment']['mimeType'], None)
+        self.assertEqual(ce.attachment_mime_type, None)
