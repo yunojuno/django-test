@@ -54,3 +54,7 @@ coverage_reports/
 docs/_build/
 
 test_app/static
+.env
+
+# pyenv
+.python-version
