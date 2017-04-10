@@ -1,5 +1,6 @@
 # Template tags used in BackOffice only
 from django import template
+from django.utils.safestring import mark_safe
 
 from trello_webhooks.settings import TRELLO_API_KEY
 
@@ -52,3 +53,25 @@ def trello_updates(new, old):
         return {k: (v, new[k]) for k, v in old.iteritems()}
     except KeyError:
         return {k: (v, None) for k, v in old.iteritems()}
+
+
+@register.filter
+def render_attachment(action):
+    """
+    Build Attachment Tag
+    If content_type of the action data is image/*, then build link with img tag,
+    else build only link (anchor) tag
+    Args:
+        action: dict
+
+    Returns:
+        safe string (HTML)
+    """
+    attachment = action.get('data', {}).get('attachment', {})
+
+    if attachment.get('content_type', '').startswith('image/'):
+        attachment_tag = u'<img src="{}"/>'.format(attachment.get('url'))
+    else:
+        attachment_tag = attachment.get('name')
+
+    return mark_safe(attachment_tag)
