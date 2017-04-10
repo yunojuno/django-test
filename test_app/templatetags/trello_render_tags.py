@@ -6,7 +6,7 @@ from django.utils.safestring import mark_safe
 register = template.Library()
 
 
-@register.filter(is_safe=True)
+@register.filter
 def render_card_attachment(attachment):
     content_type = attachment.get('mimeType') or 'unknown'
 
