@@ -5,8 +5,7 @@ import mock
 
 from django.core.urlresolvers import reverse
 from django.test import TestCase
-
-import trello
+import requests
 
 from trello_webhooks.models import Webhook, CallbackEvent
 from trello_webhooks.settings import (
@@ -50,6 +49,20 @@ def mock_trello_sync_x(webhook, verb):
     webhook.trello_id = ''
     webhook.is_active = False
     return webhook
+
+
+def _get_response(content_type):
+    mock_response = mock.MagicMock()
+    mock_response.headers = {'Content-Type': content_type}
+    return mock_response
+
+
+def mock_image_request(*args, **kwargs):
+    return _get_response('image/png')
+
+
+def mock_pdf_request(*args, **kwargs):
+    return _get_response('application/pdf')
 
 
 class WebhookModelTests(TestCase):
@@ -315,3 +328,39 @@ class CallbackEventModelTest(TestCase):
         self.assertEqual(ce.card_name, None)
         ce.event_payload = get_sample_data('createCard', 'text')
         self.assertEqual(ce.card_name, ce.event_payload['action']['data']['card']['name'])  # noqa
+
+    def test_attachment(self):
+        ce = CallbackEvent()
+        self.assertEqual(ce.attachment, None)
+        ce.event_payload = get_sample_data('addAttachmentToCard', 'text')
+        self.assertEqual(ce.attachment, ce.event_payload['action']['data']['attachment'])  # noqa
+
+    @mock.patch('requests.head', mock_image_request)
+    def test_add_content_type_to_image_attachment(self):
+        wh = Webhook().save(sync=False)
+        ce = CallbackEvent()
+        ce.webhook = wh
+        ce.event_payload = get_sample_data('addAttachmentToCard', 'text')
+        ce.event_type = ce.event_payload['action']['type']
+        ce = ce.save()
+        self.assertEqual(ce.attachment['content_type'], 'image/png')
+
+    @mock.patch('requests.head', mock_pdf_request)
+    def test_add_content_type_to_pdf_attachment(self):
+        wh = Webhook().save(sync=False)
+        ce = CallbackEvent()
+        ce.webhook = wh
+        ce.event_payload = get_sample_data('addAttachmentToCard', 'text')
+        ce.event_type = ce.event_payload['action']['type']
+        ce = ce.save()
+        self.assertEqual(ce.attachment['content_type'], 'application/pdf')
+
+    def test_return_none_when_incorrect_attachment_url(self):
+        wh = Webhook().save(sync=False)
+        ce = CallbackEvent()
+        ce.webhook = wh
+        ce.event_payload = get_sample_data('addAttachmentToCard', 'text')
+        ce.event_type = ce.event_payload['action']['type']
+        ce.attachment['url'] = 'absolutely incorrect url'
+        ce = ce.save()
+        self.assertEqual(ce.attachment.get('content_type'), None)
