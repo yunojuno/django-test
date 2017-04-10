@@ -33,6 +33,7 @@ htmlcov/
 .cache
 nosetests.xml
 coverage.xml
+coverage_reports/
 
 # Translations
 *.mo
@@ -53,3 +54,7 @@ coverage.xml
 docs/_build/
 
 test_app/static
+.env
+
+# pyenv
+.python-version

@@ -11,7 +11,10 @@ DATABASES = {
 }
 
 # the django apps aren't required for the tests,
-INSTALLED_APPS = ('trello_webhooks',)
+INSTALLED_APPS = (
+    'trello_webhooks',
+    'test_app',
+)
 
 try:
     import django_nose  # noqa

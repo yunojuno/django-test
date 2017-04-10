@@ -1,0 +1,80 @@
+{
+    "model": {
+        "id": "58eb2c31fdabf171c4bfec35",
+        "name": "test-board",
+        "desc": "",
+        "descData": null,
+        "closed": false,
+        "idOrganization": null,
+        "pinned": false,
+        "url": "https://trello.com/b/3P2VnS9c/test-board",
+        "shortUrl": "https://trello.com/b/3P2VnS9c",
+        "prefs": {
+            "permissionLevel": "private",
+            "voting": "disabled",
+            "comments": "members",
+            "invitations": "members",
+            "selfJoin": false,
+            "cardCovers": true,
+            "cardAging": "regular",
+            "calendarFeedEnabled": false,
+            "background": "lime",
+            "backgroundImage": null,
+            "backgroundImageScaled": null,
+            "backgroundTile": false,
+            "backgroundBrightness": "dark",
+            "backgroundColor": "#4BBF6B",
+            "canBePublic": true,
+            "canBeOrg": true,
+            "canBePrivate": true,
+            "canInvite": true
+        },
+        "labelNames": {
+            "green": "",
+            "yellow": "",
+            "orange": "",
+            "red": "",
+            "purple": "",
+            "blue": "",
+            "sky": "",
+            "lime": "",
+            "pink": "",
+            "black": ""
+        }
+    },
+    "action": {
+        "id": "58eb4dc0d73afc8f60b07adb",
+        "idMemberCreator": "539ab11d7b686ac0f527631a",
+        "data": {
+            "board": {
+                "shortLink": "3P2VnS9c",
+                "name": "test-board",
+                "id": "58eb2c31fdabf171c4bfec35"
+            },
+            "list": {
+                "name": "In progress",
+                "id": "58eb2d6debcc51baece679e3"
+            },
+            "card": {
+                "shortLink": "A931ioxw",
+                "idShort": 10,
+                "name": "rena",
+                "id": "58eb476ee3a994890213e726"
+            },
+            "attachment": {
+                "url": "https://images.google.com/favicon.ico",
+                "name": "google fav icon.ico",
+                "id": "58eb4dc0d73afc8f60b07ad9"
+            }
+        },
+        "type": "addAttachmentToCard",
+        "date": "2017-04-10T09:17:52.997Z",
+        "memberCreator": {
+            "id": "539ab11d7b686ac0f527631a",
+            "avatarHash": "10ec918bfa0936f14daf33322f27894e",
+            "fullName": "miphreal",
+            "initials": "M",
+            "username": "miphreal"
+        }
+    }
+}
