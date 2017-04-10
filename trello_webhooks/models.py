@@ -279,12 +279,16 @@ class CallbackEvent(models.Model):
         if self.attachment is not None and self.attachment.get('url'):
             try:
                 request = requests.head(self.attachment.get('url'))
-                return request.get('Content-Type')
+                return request.headers.get('Content-Type')
             except requests.exceptions.ConnectionError:
                 logger.warning(
                     u"Connection error on attachment url raised"
                 )
-                return None
+            except requests.exceptions.MissingSchema as ex:
+                logger.warning(
+                    u"Incorrect attachment url was received"
+                )
+            return None
 
     @property
     def action_data(self):
