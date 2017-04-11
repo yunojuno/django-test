@@ -119,5 +119,6 @@ class AttachmentTests(TestCase):
 
         test_payload = get_sample_data(self.event_type, 'json')
 
-        resp = self.client.post(self.url, data=json.dumps(test_payload), content_type='application/json')
+        resp = self.client.post(self.url, data=json.dumps(test_payload),
+                                content_type='application/json')
         self.assertEqual(resp.status_code, 200)
