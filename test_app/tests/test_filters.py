@@ -6,7 +6,7 @@ from test_app.templatetags import filters
 
 class FiltersTests(TestCase):
 
-    def test_content_type_with_image(self):
+    def test_image_content_type_is_rendered_in_img_tag(self):
         attachment = {
             'name': 'Screenshot.png',
             'url': 'https://test.org',
@@ -17,7 +17,7 @@ class FiltersTests(TestCase):
             '<a href="https://test.org"><img src="https://test.org"></a>'
         )
 
-    def test_content_type_with_video(self):
+    def test_image_content_type_is_rendered_without_img_tag(self):
         attachment = {
             'name': 'sail.mp4',
             'url': 'https://test.org',
