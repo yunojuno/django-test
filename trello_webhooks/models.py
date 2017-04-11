@@ -284,6 +284,9 @@ class CallbackEvent(models.Model):
                 else:
                     self.action_data['attachment']['content_type'] = content_type
 
+                content_type = requests.head(url).headers.get('Content-Type')
+                self.action_data['attachment']['content_type'] = content_type
+
         self.timestamp = timezone.now()
         super(CallbackEvent, self).save(*args, **kwargs)
         return self
