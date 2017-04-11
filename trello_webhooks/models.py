@@ -271,8 +271,18 @@ class CallbackEvent(models.Model):
         if attachment:
             url = attachment.get('url')
             if url:
-                content_type = requests.head(url).headers.get('Content-Type')
-                self.action_data['attachment']['content_type'] = content_type
+                try:
+                    content_type = requests.head(url).headers.get('Content-Type')
+                except requests.exceptions.ConnectionError:
+                    logger.warning(
+                        u"Connection error on attachment url='{}'".format(url)
+                    )
+                except Exception:
+                    logger.warning(
+                        u"Unexpected error. Attachment url='{}'".format(url)
+                    )
+                else:
+                    self.action_data['attachment']['content_type'] = content_type
 
         self.timestamp = timezone.now()
         super(CallbackEvent, self).save(*args, **kwargs)
