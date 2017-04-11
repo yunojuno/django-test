@@ -280,19 +280,22 @@ class CallbackEvent(models.Model):
             return None
         else:
             try:
-                request = requests.head(self.attachment.get('url'))
+                attachment_url = self.attachment.get('url')
+                request = requests.head(attachment_url)
                 return request.headers.get('Content-Type')
             except requests.exceptions.ConnectionError:
                 logger.warning(
-                    u"Connection error on attachment url='{url}' raised".format(**self.attachment)
+                    u"Connection error on attachment url='{}' raised".format(attachment_url)
                 )
             except requests.exceptions.MissingSchema:
                 logger.warning(
-                    u"Incorrect attachment url='{url}' was received".format(**self.attachment)
+                    u"Incorrect attachment url='{}' was received".format(attachment_url)
                 )
             except Exception as ex:
                 logger.warning(
-                    u"Unexpected error occurred. Exception info: {}".format(ex)
+                    u"Unexpected error occurred. "
+                    u"Exception info: {}. "
+                    u"Attachment url='{}'".format(ex, attachment_url)
                 )
 
     @property
