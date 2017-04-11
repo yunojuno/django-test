@@ -3,12 +3,15 @@ import json
 import logging
 
 from django.core.urlresolvers import reverse
+from jsonfield_compat.fields import JSONField
 from django.db import models
-from django.template.base import TemplateDoesNotExist
+try:
+    from django.template.base import TemplateDoesNotExist
+except ImportError:  # Removed in Django 1.9
+    from django.template import TemplateDoesNotExist
 from django.template.loader import render_to_string
 from django.utils import timezone
 
-from jsonfield import JSONField
 import trello
 
 from trello_webhooks import settings
@@ -270,14 +273,18 @@ class CallbackEvent(models.Model):
         return self
 
     @property
+    def event_payload_json(self):
+        return json.loads(self.event_payload)
+
+    @property
     def action_data(self):
         """Returns the 'data' node from the payload."""
-        return self.event_payload.get('action', {}).get('data')
+        return self.event_payload_json.get('action', {}).get('data')
 
     @property
     def member(self):
         """Returns 'memberCreator' JSON extracted from event_payload."""
-        return self.event_payload.get('action', {}).get('memberCreator')
+        return self.event_payload_json.get('action', {}).get('memberCreator')
 
     @property
     def board(self):
@@ -340,7 +347,7 @@ class CallbackEvent(models.Model):
 
         """
         try:
-            return render_to_string(self.template, self.event_payload)
+            return render_to_string(self.template, json.loads(self.event_payload))
         except TemplateDoesNotExist:
             logger.warning(
                 u"Missing or misconfigured template: '%s'",
