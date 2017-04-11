@@ -257,10 +257,21 @@ class WebhookModelTests(TestCase):
 class CallbackEventModelTest(TestCase):
 
     def test_default_properties(self):
-        pass
+        hook = Webhook().save(sync=False)
+        event = CallbackEvent(webhook=hook)
+
+        self.assertEqual(event.event_type, '')
+        self.assertEqual(event.timestamp, None)
+        self.assertEqual(event.event_payload, {})        
 
     def test_save(self):
-        pass
+        hook = Webhook().save(sync=False)
+        event = CallbackEvent(webhook=hook)
+
+        event.event_payload = get_sample_data('addAttachmentToCard', 'text')
+        event.save()
+
+        self.assertEqual(event.action_data['attachment']['content_type'], 'image/png')
 
     def test_action_data(self):
         ce = CallbackEvent()
