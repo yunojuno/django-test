@@ -9,6 +9,7 @@ from django.template.loader import render_to_string
 from django.utils import timezone
 
 from jsonfield import JSONField
+import requests
 import trello
 
 from trello_webhooks import settings
@@ -264,10 +265,38 @@ class CallbackEvent(models.Model):
         )
 
     def save(self, *args, **kwargs):
-        """Update timestamp"""
+        """Update timestamp and attachment content type"""
         self.timestamp = timezone.now()
+        content_type = self.get_attachment_content_type()
+        if content_type:
+            self.attachment['content_type'] = content_type
         super(CallbackEvent, self).save(*args, **kwargs)
         return self
+
+    def get_attachment_content_type(self):
+        """Return attachment type from attached data (if attachment and attachment url exist)
+        or None(in exception case or attachment doesn't exist)"""
+        if self.attachment is None or not self.attachment.get('url'):
+            return None
+        else:
+            try:
+                attachment_url = self.attachment.get('url')
+                request = requests.head(attachment_url)
+                return request.headers.get('Content-Type')
+            except requests.exceptions.ConnectionError:
+                logger.warning(
+                    u"Connection error on attachment url='{}' raised".format(attachment_url)
+                )
+            except requests.exceptions.MissingSchema:
+                logger.warning(
+                    u"Incorrect attachment url='{}' was received".format(attachment_url)
+                )
+            except Exception as ex:
+                logger.warning(
+                    u"Unexpected error occurred. "
+                    u"Exception info: {}. "
+                    u"Attachment url='{}'".format(ex, attachment_url)
+                )
 
     @property
     def action_data(self):
@@ -318,6 +347,11 @@ class CallbackEvent(models.Model):
     def template(self):
         """Return full path to render template, based on event_type."""
         return 'trello_webhooks/%s.html' % self.event_type
+
+    @property
+    def attachment(self):
+        """Return 'attachment' JSON from event_payload if it exist."""
+        return self.action_data.get('attachment') if self.action_data else None
 
     def render(self):
         """Render the event using an HTML template.
