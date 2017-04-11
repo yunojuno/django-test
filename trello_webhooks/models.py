@@ -295,7 +295,6 @@ class CallbackEvent(models.Model):
                     u"Unexpected error occurred. Exception info: {}".format(ex)
                 )
 
-
     @property
     def action_data(self):
         """Returns the 'data' node from the payload."""
