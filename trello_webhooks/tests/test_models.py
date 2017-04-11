@@ -333,3 +333,12 @@ class CallbackEventModelTest(TestCase):
         ce.event_type = ce.event_payload['action']['type']
         ce = ce.save()
         self.assertEqual(ce.action_data['attachment']['content_type'], 'text/html')
+
+    def test_incorrect_url_for_attachment(self):
+        wh = Webhook().save(sync=False)
+        ce = CallbackEvent(webhook=wh, event_type='addAttachmentToCard')
+        ce.event_payload = get_sample_data('addAttachmentToCard', 'text')
+        ce.event_type = ce.event_payload['action']['type']
+        ce.action_data['attachment']['url'] = 'Incorrect URL'
+        ce = ce.save()
+        self.assertIsNone(ce.action_data['attachment'].get('content_type'))
