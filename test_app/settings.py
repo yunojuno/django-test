@@ -27,6 +27,7 @@ if HIPCHAT_ENABLED:
     print u"HipChat integration is ENABLED: %s" % HIPCHAT_ROOM_ID
 else:
     print u"HipChat integration is DISABLED"
+USE_NATIVE_JSONFIELD = True
 # ============= / APP SETTINGS ===================
 
 DEBUG = environ.get('DEBUG', False)
@@ -66,15 +67,21 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.messages.middleware.MessageMiddleware',
 ]
 
-TEMPLATE_CONTEXT_PROCESSORS = [
-    'django.contrib.messages.context_processors.messages',
-    'django.contrib.auth.context_processors.auth',
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            # insert your TEMPLATE_DIRS here
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.contrib.messages.context_processors.messages',
+                'django.contrib.auth.context_processors.auth',
+            ],
+        },
+    },
 ]
-
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader'
-)
 
 TEMPLATE_DIRS = (
 )
