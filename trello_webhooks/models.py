@@ -10,6 +10,7 @@ from django.utils import timezone
 
 from jsonfield import JSONField
 import trello
+import requests
 
 from trello_webhooks import settings
 from trello_webhooks import signals
@@ -265,9 +266,22 @@ class CallbackEvent(models.Model):
 
     def save(self, *args, **kwargs):
         """Update timestamp"""
+
+        attachment = self.attachment
+        if attachment:
+            url = attachment.get('url')
+            if url:
+                content_type = requests.head(url).headers.get('Content-Type')
+                self.action_data['attachment']['content_type'] = content_type
+
         self.timestamp = timezone.now()
         super(CallbackEvent, self).save(*args, **kwargs)
         return self
+
+    @property
+    def attachment(self):
+        """Return 'attachment' JSON from 'action_data'."""
+        return self.action_data.get('attachment') if self.action_data else None
 
     @property
     def action_data(self):
