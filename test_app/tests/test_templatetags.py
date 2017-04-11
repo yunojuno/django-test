@@ -7,7 +7,7 @@ class TestTemplateTags(TestCase):
 
     template = Template("{% load hipchat_tags %} {{ attachment|render_attachment }}")
 
-    def test_render_image_attachment(self):
+    def test_image_content_type_is_rendered_in_img_tag(self):
         image_attachment = {
             'url': 'http://test.com',
             'name': 'test-image',
@@ -17,7 +17,7 @@ class TestTemplateTags(TestCase):
         self.assertIn('img', rendered_template)
         self.assertIn(image_attachment['url'], rendered_template)
 
-    def test_render_not_image_attachment(self):
+    def test_image_content_type_is_not_rendered_in_img_tag(self):
         not_image_attachment = {
             'url': 'http://test.com',
             'name': 'some-document',

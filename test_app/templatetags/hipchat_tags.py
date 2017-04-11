@@ -7,9 +7,11 @@ register = template.Library()
 
 @register.filter
 def render_attachment(attachment_data):
-    """Render attachment to correct html.
+    """
+    Render attachment to correct html.
     If attachment data has an image type, template will be formatted with img tag.
-    Otherwise if will be formatted as a simple url"""
+    Otherwise if will be formatted as a simple url
+    """
     content_type = attachment_data.get('content_type', '')
     attachment_is_image = content_type.split('/')[0].lower() == 'image'
 

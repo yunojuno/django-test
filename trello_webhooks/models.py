@@ -276,19 +276,25 @@ class CallbackEvent(models.Model):
     def get_attachment_content_type(self):
         """Return attachment type from attached data (if attachment and attachment url exist)
         or None(in exception case or attachment doesn't exist)"""
-        if self.attachment is not None and self.attachment.get('url'):
+        if self.attachment is None or not self.attachment.get('url'):
+            return None
+        else:
             try:
                 request = requests.head(self.attachment.get('url'))
                 return request.headers.get('Content-Type')
             except requests.exceptions.ConnectionError:
                 logger.warning(
-                    u"Connection error on attachment url raised"
+                    u"Connection error on attachment url='{url}' raised".format(**self.attachment)
                 )
-            except requests.exceptions.MissingSchema as ex:
+            except requests.exceptions.MissingSchema:
                 logger.warning(
-                    u"Incorrect attachment url was received"
+                    u"Incorrect attachment url='{url}' was received".format(**self.attachment)
                 )
-            return None
+            except Exception as ex:
+                logger.warning(
+                    u"Unexpected error occurred. Exception arguments: {}".format(ex)
+                )
+
 
     @property
     def action_data(self):
