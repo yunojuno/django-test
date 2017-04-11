@@ -10,8 +10,7 @@ from django.utils import timezone
 
 from jsonfield import JSONField
 import trello
-from requests.exceptions import MissingSchema
-from requests.packages.urllib3.connectionpool import HTTPConnectionPool
+from requests.exceptions import MissingSchema, ConnectionError
 
 from trello_webhooks import settings
 from trello_webhooks import signals
@@ -371,9 +370,9 @@ class CallbackEvent(models.Model):
                 response = requests.head(attachment.get('url'))
                 self.event_payload['action']['data']['attachment']['content_type'] =\
                     response.headers['Content-Type']
-            except HTTPConnectionPool as e:
+            except ConnectionError as e:
                 logger.warning(
-                    u'HTTP(S) Connection Pool Error: %s. URL: %s', e, attachment.get('url'))
+                    u'HTTP Connection Error: %s. URL: %s', e, attachment.get('url'))
             except MissingSchema as e:
                 logger.warning(
                     u'Missing schema or no `url` parameter passed in attachment: %s. URL: %s',
