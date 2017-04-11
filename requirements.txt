@@ -1,5 +1,5 @@
-Django==1.7.11
+Django==1.11
 dj-database-url==0.3.0
-django-jsonfield==0.9.13
+django_jsonfield_compat==0.4.4
 git+https://github.com/sarumont/py-trello.git@766c90dc1dacd2e3fcfc579079a6aab38be43aef
-psycopg2==2.5.4
+psycopg2==2.7.1
