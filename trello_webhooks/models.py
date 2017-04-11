@@ -292,7 +292,7 @@ class CallbackEvent(models.Model):
                 )
             except Exception as ex:
                 logger.warning(
-                    u"Unexpected error occurred. Exception arguments: {}".format(ex)
+                    u"Unexpected error occurred. Exception info: {}".format(ex)
                 )
 
 
