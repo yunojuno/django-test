@@ -327,10 +327,9 @@ class CallbackEvent(models.Model):
         """Get content attachment content-type"""
 
         attachment = self.event_payload.get('action', {}).get('data', {}).get('attachment')
-        attachment_url = attachment.get('url')
-        if attachment and attachment_url:
+        if attachment and attachment.get('url'):
             try:
-                content_type = requests.head(attachment_url).headers.get('content-type')
+                content_type = requests.head(attachment.get('url')).headers.get('Content-Type')
             except requests.exceptions.RequestException:
                 logger.warning(
                     u"Cannot determine content type for attachment %s with URL %s",
