@@ -2,14 +2,17 @@
 import json
 import logging
 
+import requests
+import trello
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.template.base import TemplateDoesNotExist
 from django.template.loader import render_to_string
 from django.utils import timezone
 
+from django.utils.functional import cached_property
 from jsonfield import JSONField
-import trello
+from requests import RequestException
 
 from trello_webhooks import settings
 from trello_webhooks import signals
@@ -295,6 +298,11 @@ class CallbackEvent(models.Model):
         return self.action_data.get('card') if self.action_data else None
 
     @property
+    def attachment(self):
+        """Returns 'attachment' JSON extracted from event_payload."""
+        return self.action_data.get('attachment') if self.action_data else None
+
+    @property
     def member_name(self):
         """Return member name if it exists (used in admin)."""
         return self.member.get('fullName') if self.member else None
@@ -318,6 +326,21 @@ class CallbackEvent(models.Model):
     def template(self):
         """Return full path to render template, based on event_type."""
         return 'trello_webhooks/%s.html' % self.event_type
+
+    @cached_property
+    def attachment_content_type(self):
+        """Return attachment content type if any"""
+        attachment = self.attachment
+        url = attachment.get('url')
+
+        if attachment and url:
+            try:
+                response = requests.head(url)
+            except RequestException:
+                return None
+
+            if response.status_code == 200:
+                return response.headers.get('Content-Type')
 
     def render(self):
         """Render the event using an HTML template.
