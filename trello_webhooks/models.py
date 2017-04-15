@@ -269,6 +269,7 @@ class CallbackEvent(models.Model):
     def save(self, *args, **kwargs):
         """Update timestamp"""
         self.timestamp = timezone.now()
+        self._set_content_type()
         super(CallbackEvent, self).save(*args, **kwargs)
         return self
 
@@ -370,3 +371,10 @@ class CallbackEvent(models.Model):
                 self.template
             )
             return None
+
+    def _set_content_type(self):
+        """Add content type of attachment to action_data"""
+
+        content_type = self.attachment_content_type
+        if content_type:
+            self.action_data['attachment']['content_type'] = content_type
