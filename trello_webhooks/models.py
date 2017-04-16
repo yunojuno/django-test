@@ -332,16 +332,22 @@ class CallbackEvent(models.Model):
     def attachment_content_type(self):
         """Return attachment content type if any"""
         attachment = self.attachment
-        url = attachment.get('url')
+        if not attachment:
+            return None
 
-        if attachment and url:
-            try:
-                response = requests.head(url)
-            except RequestException:
-                return None
+        try:
+            response = requests.head(attachment.get('url'))
+        except RequestException as ex:
+            logger.error(u"Can't fetch attachment: %s", ex)
+            return None
 
-            if response.status_code == 200:
-                return response.headers.get('Content-Type')
+        if response.status_code == 200:
+            return response.headers.get('Content-Type')
+
+        logger.error(
+            u"Unexpected attachment status code: %d",
+            response.status_code
+        )
 
     def render(self):
         """Render the event using an HTML template.

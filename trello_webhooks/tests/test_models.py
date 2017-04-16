@@ -254,6 +254,15 @@ class WebhookModelTests(TestCase):
         # other CallbackEvent properties are tested in CallbackEvent tests
 
 
+def get_mock_response(content_type):
+    response = mock.MagicMock()
+    response.status_code = 200
+    response.headers = {
+        'Content-Type': content_type,
+    }
+    return response
+
+
 class CallbackEventModelTest(TestCase):
 
     def test_default_properties(self):
@@ -315,3 +324,27 @@ class CallbackEventModelTest(TestCase):
         self.assertEqual(ce.card_name, None)
         ce.event_payload = get_sample_data('createCard', 'text')
         self.assertEqual(ce.card_name, ce.event_payload['action']['data']['card']['name'])  # noqa
+
+    @mock.patch('requests.head', lambda l: get_mock_response('foo/bar'))
+    def test_attachment_content_type(self):
+        payload = get_sample_data('addAttachmentToCard', 'json')
+
+        webhook = Webhook().save(sync=False)
+        callback = CallbackEvent(webhook=webhook)  # noqa
+        callback.event_payload = payload
+        callback.save()
+
+        fresh_callback = CallbackEvent.objects.get(pk=callback.pk)
+        self.assertEqual('foo/bar', fresh_callback.action_data['attachment']['content_type'])  # noqa
+
+    @mock.patch('requests.head', lambda l: get_mock_response('image/png'))
+    def test_attachment_content_type_image(self):
+        payload = get_sample_data('addAttachmentToCard', 'json')
+
+        webhook = Webhook().save(sync=False)
+        callback = CallbackEvent(webhook=webhook)  # noqa
+        callback.event_payload = payload
+        callback.save()
+
+        fresh_callback = CallbackEvent.objects.get(pk=callback.pk)
+        self.assertEqual('image/png', fresh_callback.action_data['attachment']['content_type'])  # noqa
