@@ -52,6 +52,22 @@ def mock_trello_sync_x(webhook, verb):
     return webhook
 
 
+def mock_response_content_type(content_type):
+    """Fake version of requests.response for fetching attachment content type
+    
+    This mock requires content type of attachment.
+    
+    In addition it sets the status_code to 200
+    
+    """
+    response = mock.MagicMock()
+    response.status_code = 200
+    response.headers = {
+        'Content-Type': content_type,
+    }
+    return response
+
+
 class WebhookModelTests(TestCase):
 
     def test_default_properties(self):
@@ -254,15 +270,6 @@ class WebhookModelTests(TestCase):
         # other CallbackEvent properties are tested in CallbackEvent tests
 
 
-def get_mock_response(content_type):
-    response = mock.MagicMock()
-    response.status_code = 200
-    response.headers = {
-        'Content-Type': content_type,
-    }
-    return response
-
-
 class CallbackEventModelTest(TestCase):
 
     def test_default_properties(self):
@@ -325,7 +332,7 @@ class CallbackEventModelTest(TestCase):
         ce.event_payload = get_sample_data('createCard', 'text')
         self.assertEqual(ce.card_name, ce.event_payload['action']['data']['card']['name'])  # noqa
 
-    @mock.patch('requests.head', lambda l: get_mock_response('foo/bar'))
+    @mock.patch('trello_webhooks.models.requests.head', lambda l: mock_response_content_type('foo/bar'))  # noqa
     def test_attachment_content_type(self):
         payload = get_sample_data('addAttachmentToCard', 'json')
 
@@ -337,7 +344,7 @@ class CallbackEventModelTest(TestCase):
         fresh_callback = CallbackEvent.objects.get(pk=callback.pk)
         self.assertEqual('foo/bar', fresh_callback.action_data['attachment']['content_type'])  # noqa
 
-    @mock.patch('requests.head', lambda l: get_mock_response('image/png'))
+    @mock.patch('trello_webhooks.models.requests.head', lambda l: mock_response_content_type('image/png'))  # noqa
     def test_attachment_content_type_image(self):
         payload = get_sample_data('addAttachmentToCard', 'json')
 
