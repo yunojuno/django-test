@@ -17,6 +17,13 @@
                 "idShort": 1,
                 "name": "Test card",
                 "id": "5476fb7437746ac807afe2a5"
+            },
+            "attachment": {
+                "url": "https://trello-attachments.s3.amazonaws.com/52d409b1b243f27143c880f5/52d40ab0e5bea7f93c353a3c/35728ec314d5d039a7d57dfbf5782c9e/taco.png",
+                "name": "taco.png",
+                "id": "52d409b1b243f27143c880f5",
+                "previewUrl": "https://trello-attachments.s3.amazonaws.com/52d409b1b243f27143c880f5/52d40ab0e5bea7f93c353a3c/35728ec314d5d039a7d57dfbf5782c9e/taco.png",
+                "previewUrl2x": "https://trello-attachments.s3.amazonaws.com/52d409b1b243f27143c880f5/52d40ab0e5bea7f93c353a3c/4c356f6aefaffbf0ec5f1dc67d291441/taco.png_500x414.png"
             }
         },
         "type": "createCard",
