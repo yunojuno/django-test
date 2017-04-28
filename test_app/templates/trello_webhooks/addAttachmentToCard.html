@@ -1,0 +1,2 @@
+<strong>{{action.memberCreator.initials}}</strong> added attachment "<strong><a href="{{action.data.attachment.url}}">{% if action.data.attachment.content_type == "image/jpeg" %}<img src={{action.data.attachment.url}} /> {% else %}{{action.data.attachment.name}}{% endif %}</a></strong>"
+{% include 'trello_webhooks/partials/card_link.html' %}
