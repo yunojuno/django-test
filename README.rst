@@ -1,33 +1,36 @@
-This README describes the project as a whole. Instructions on how to complete the
-YunoJuno platfom developer test can be found in the separate `INSTRUCTIONS <INSTRUCTIONS.md>`_
-file in the root of the project.
+.. image:: https://travis-ci.org/yunojuno/django-appmail.svg?branch=master
+    :target: https://travis-ci.org/yunojuno/django-appmail
+
+This README describes the project as a whole. Instructions on how to complete
+the YunoJuno platfom developer test can be found in the separate `INSTRUCTIONS
+<INSTRUCTIONS.md>`_ file in the root of the project.
 
 ----
 
 Background
 ----------
 
-Trello is a very simple web app that manages lists of cards on a board - it's like a
-digital pinboard. You can create cards, comment on them, add attachments, move them
-from list to list. To make it possible to integrate with Trello, it fires off
-callback events whenever a user interacts with any entity within it. There is a
-huge list of available events. **This project is designed to make it easy to capture
-those events**, and it includes a canonical implementation of an event receiver that
-pipes those events to HipChat, which is a hosted IRC-like chat app - exactly like
-Slack.
+Trello is a very simple web app that manages lists of cards on a board - it's
+like a digital pinboard. You can create cards, comment on them, add
+attachments, move them from list to list. To make it possible to integrate
+with Trello, it fires off callback events whenever a user interacts with any
+entity within it. There is a huge list of available events. **This project is
+designed to make it easy to capture those events**, and it includes a
+canonical implementation of an event receiver that pipes those events to
+HipChat, which is a hosted IRC-like chat app - exactly like Slack.
 
-`Trello webhooks <https://trello.com/docs/gettingstarted/webhooks.html>`_
-can only be managed programmatically via the API, which is clever, but also
-a massive PITA. In addition, whilst creating a new webhook, Trello will
-immediately call the registered callback URL with a HEAD request to verify
-that it exists. This makes setting up webhooks fiddly and complex (esp. when
+`Trello webhooks <https://trello.com/docs/gettingstarted/webhooks.html>`_ can
+only be managed programmatically via the API, which is clever, but also a
+massive PITA. In addition, whilst creating a new webhook, Trello will
+immediately call the registered callback URL with a HEAD request to verify that
+it exists. This makes setting up webhooks fiddly and complex (esp. when
 experimenting in a local development environment).
 
 This project is a Django app that makes managing Trello webhook easy. Well,
 easier. It exposes Trello webhooks through the Django admin site as standard
 Django models that can be created and deleted through a web UI. Incoming
-webhook events are then exposed via Django signals that are raised, and
-can be integrated into your application.
+webhook events are then exposed via Django signals that are raised, and can be
+integrated into your application.
 
 How does it work?
 -----------------
@@ -197,11 +200,11 @@ Further Developments
 Contributing
 ------------
 
-Usual rules apply - fork, send pull request. Please try and adhere to the existing
-coding style - it may not be your style, but it's the project's style, so PRs will
-be rejected if they 'smell bad'. Specifically, given that this is an app that is
-pushing data over the wire, and therefore hard to debug - lots of logging, and
-lots of comments. Seriously. Lots.
+Usual rules apply - fork, send pull request. Please try and adhere to the
+existing coding style - it may not be your style, but it's the project's
+style, so PRs will be rejected if they 'smell bad'. Specifically, given that
+this is an app that is pushing data over the wire, and therefore hard to debug
+- lots of logging, and lots of comments. Seriously. Lots.
 
 Licence
 -------
@@ -220,14 +223,15 @@ thanks to anyone involved with either of those.
 Addenda
 -------
 
-The webhook API works on the concept of a Trello model id. This refers to the object
-being watched - and could be a Board, a List, a Card etc. Getting these ids is a bit
-of a pain, to put it mildly, so I would strongly recommend using the excellent
-`Trello Explorer <http://www.hwartig.com/trelloapiexplorer>`_ app from Harald Wartig (@hwartig).
+The webhook API works on the concept of a Trello model id. This refers to the
+object being watched - and could be a Board, a List, a Card etc. Getting these
+ids is a bit of a pain, to put it mildly, so I would strongly recommend using
+the excellent `Trello Explorer <http://www.hwartig.com/trelloapiexplorer>`_
+app from Harald Wartig (@hwartig).
 
-I would also recommend the use of `ngrok <https://ngrok.com/>`_ to expose your local
-Django dev server during development.
+I would also recommend the use of `ngrok <https://ngrok.com/>`_ to expose your
+local Django dev server during development.
 
-As for development itself - use virtualenv, install dependencies from requirements.txt
-and set up environment variables. If that doesn't mean anything to you - I'm afraid
-you have a lot to learn.
+As for development itself - use virtualenv, install dependencies from
+requirements.txt and set up environment variables. If that doesn't mean
+anything to you - I'm afraid you have a lot to learn.
