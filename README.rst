@@ -1,5 +1,5 @@
-.. image:: https://travis-ci.org/yunojuno/django-appmail.svg?branch=master
-    :target: https://travis-ci.org/yunojuno/django-appmail
+.. image:: https://travis-ci.org/yunojuno/django-test.svg?branch=master
+    :target: https://travis-ci.org/yunojuno/django-test
 
 This README describes the project as a whole. Instructions on how to complete
 the YunoJuno platfom developer test can be found in the separate `INSTRUCTIONS
