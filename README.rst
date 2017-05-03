@@ -111,7 +111,7 @@ Below is an example of the default ``commendCard.html`` template.
 The default templates are designed to show what is possible - and it's
 recommended that you override these in your application. You can do
 this using Django template overriding - add your template to your
-application in the same locaion (``/templates/trello_webhooks/<event_type>.html``)
+application in the same location (``/templates/trello_webhooks/<event_type>.html``)
 and declare your app **above** the ``trello_webhooks`` app in the
 ``INSTALLED_APPS`` setting, and your template will be used instead
 of the default.
