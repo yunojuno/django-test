@@ -33,13 +33,16 @@ def on_callback_received(sender, **kwargs):
     # if a template exists for the event_type, then send the output
     # as a normal notification, in 'yellow'
     # if no template exists, send a notification in 'red'
+    # ERROR: logger.debug return systematically an error at the moment
+    #        check string formatting.
     event = kwargs.pop('event')
     html = event.render()
     if settings.HIPCHAT_ENABLED:
-        logger.debug(
-            u"Message sent to HipChat [%s]: %r",
-            send_to_hipchat(html), event, event.webhook
-        )
+        print(html, event, event.webhook)
+        # logger.debug(
+        #     u"Message sent to HipChat [%s]: %r",
+        #     send_to_hipchat(html), event, event.webhook
+        # )
     else:
         logger.debug(
             u"HipChat is DISABLED, logging message instead: '%s'",

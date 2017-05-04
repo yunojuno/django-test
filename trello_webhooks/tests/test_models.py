@@ -2,6 +2,7 @@
 import datetime
 import json
 import mock
+import requests
 
 from django.core.urlresolvers import reverse
 from django.test import TestCase
@@ -292,6 +293,12 @@ class CallbackEventModelTest(TestCase):
         ce.event_payload = get_sample_data('createCard', 'text')
         self.assertEqual(ce.card, ce.event_payload['action']['data']['card'])
 
+    def test_attachment(self):
+        ce = CallbackEvent()
+        self.assertEqual(ce.attachment, None)
+        ce.event_payload = get_sample_data('createCard', 'text')
+        self.assertEqual(ce.attachment, ce.event_payload['action']['data']['attachment'])  # noqa
+
     def test_member_name(self):
         ce = CallbackEvent()
         self.assertEqual(ce.member_name, None)
@@ -315,3 +322,12 @@ class CallbackEventModelTest(TestCase):
         self.assertEqual(ce.card_name, None)
         ce.event_payload = get_sample_data('createCard', 'text')
         self.assertEqual(ce.card_name, ce.event_payload['action']['data']['card']['name'])  # noqa
+
+    # Testing url + if content-type is correctly created
+    def test_attachment_type(self):
+        ce = CallbackEvent()
+        self.assertEqual(ce.attachment_type, None)
+        ce.event_payload = get_sample_data('createCard', 'text')
+        url = ce.event_payload['action']['data']['attachment']['url']
+        r = requests.head(url)
+        self.assertEqual(ce.attachment_type, r.headers.get('content-type'))  # noqa

@@ -1,5 +1,6 @@
 # # -*- coding: utf-8 -*-
 import json
+import requests
 import logging
 
 from django.core.urlresolvers import reverse
@@ -266,6 +267,7 @@ class CallbackEvent(models.Model):
     def save(self, *args, **kwargs):
         """Update timestamp"""
         self.timestamp = timezone.now()
+        self.attachment_type
         super(CallbackEvent, self).save(*args, **kwargs)
         return self
 
@@ -292,7 +294,13 @@ class CallbackEvent(models.Model):
     @property
     def card(self):
         """Returns 'card' JSON extracted from event_payload."""
+        print("coucou CARD")
         return self.action_data.get('card') if self.action_data else None
+
+    @property
+    def attachment(self):
+        """Returns 'attachment' JSON extracted from event_payload."""
+        return self.action_data.get('attachment') if self.action_data else None
 
     @property
     def member_name(self):
@@ -313,6 +321,29 @@ class CallbackEvent(models.Model):
     def card_name(self):
         """Return card name if it exists (used in admin)."""
         return self.card.get('name') if self.card else None
+
+    @property
+    def attachment_type(self):
+        """
+        Check if attachment_type is already in Json.
+        If not, take url from attachment and request contentType
+        from HEADERS and add it to the json
+        """
+        if self.attachment:
+            attachment_type = self.attachment.get('content_type')
+            if attachment_type and len(attachment_type) > 0:
+                return attachment_type
+
+            url = self.attachment.get('url')
+            if url:
+                r = requests.head(url)
+                if r.status_code == requests.codes.ok:
+                    attachment_type = r.headers.get('content-type')
+                    self.attachment.update({
+                        'content_type': attachment_type
+                    })
+                    return attachment_type
+        return None
 
     @property
     def template(self):
@@ -339,8 +370,12 @@ class CallbackEvent(models.Model):
         property for the full path to the template that is loaded).
 
         """
+
         try:
-            return render_to_string(self.template, self.event_payload)
+            return render_to_string(
+                self.template,
+                self.event_payload,
+            )
         except TemplateDoesNotExist:
             logger.warning(
                 u"Missing or misconfigured template: '%s'",
