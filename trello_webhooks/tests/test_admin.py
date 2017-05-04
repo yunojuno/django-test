@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.test import TestCase
 
-from trello_webhooks.admin import CallbackEventAdmin
-from trello_webhooks.models import Webhook, CallbackEvent
+from ..admin import CallbackEventAdmin
+from ..models import Webhook, CallbackEvent
 
 
 class CallbackEventAdminTests(TestCase):

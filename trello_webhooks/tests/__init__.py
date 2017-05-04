@@ -1,9 +1,8 @@
-# trello_webhooks.tests package
 import json
 from os import path
 
 
-def get_sample_data(action, format_):
+def get_sample_data(action):
     """Return test JSON payload as 'json' or 'text' object.
 
     Args:
@@ -17,4 +16,4 @@ def get_sample_data(action, format_):
         'sample_data/%s.json' % action
     )
     with open(_path, 'r') as f:
-        return f.read() if format_ == 'text' else json.load(f)
+        return json.load(f)

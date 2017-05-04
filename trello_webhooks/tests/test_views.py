@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 import json
 
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 
-from trello_webhooks.models import Webhook, CallbackEvent
-from trello_webhooks.tests import get_sample_data
+from ..models import Webhook, CallbackEvent
+from ..tests import get_sample_data
 
 
 class WebhookViewTests(TestCase):
-    pass
 
     def setUp(self):
         self.payload = {'auth_token': 'A', 'trello_model_id': '123'}
@@ -29,7 +30,7 @@ class WebhookViewTests(TestCase):
             trello_model_id=self.payload['trello_model_id']
         ).save(sync=False)
         self.assertEqual(CallbackEvent.objects.count(), 0)
-        test_payload = get_sample_data('commentCard', 'json')
+        test_payload = get_sample_data('commentCard')
         resp = self.client.post(
             self.url,
             data=json.dumps(test_payload),
@@ -37,8 +38,9 @@ class WebhookViewTests(TestCase):
         )
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(CallbackEvent.objects.count(), 1)
+        event = CallbackEvent.objects.get()
         self.assertEqual(
-            CallbackEvent.objects.get().event_payload,
+            event.event_payload,
             test_payload
         )
 

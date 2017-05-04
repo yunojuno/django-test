@@ -1,5 +1,15 @@
-# Django==1.7.1
-dj-database-url==0.3.0
-django-jsonfield==0.9.13
-git+https://github.com/sarumont/py-trello.git@766c90dc1dacd2e3fcfc579079a6aab38be43aef
-psycopg2==2.5.4
+# Requirements for running the project locally
+appdirs==1.4.3
+dj-database-url==0.4.2
+# Django==1.9
+django-jsonfield==1.0.1
+oauthlib==2.0.2
+packaging==16.8
+psycopg2==2.7.1
+py-trello==0.9.0
+pyparsing==2.2.0
+python-dateutil==2.6.0
+pytz==2017.2
+requests==2.13.0
+requests-oauthlib==0.8.0
+six==1.10.0

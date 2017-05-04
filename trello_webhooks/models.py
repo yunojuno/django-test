@@ -1,27 +1,28 @@
 # # -*- coding: utf-8 -*-
-import json
 import logging
 
+from django.conf import settings
+from django.contrib.postgres.fields import JSONField
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.template import TemplateDoesNotExist
 from django.template.loader import render_to_string
 from django.utils import timezone
 
-from jsonfield import JSONField
 import trello
 
-from trello_webhooks import settings
-from trello_webhooks import signals
+from . import signals
 
 logger = logging.getLogger(__name__)
 
 
 # free-floating function to get a new trello.TrelloClient object
 # using the stored settings
-def get_trello_client(api_key=settings.TRELLO_API_KEY,
-                      api_secret=settings.TRELLO_API_SECRET,
-                      token=None):  # noqa
+def get_trello_client(
+    api_key=settings.TRELLO_API_KEY,
+    api_secret=settings.TRELLO_API_SECRET,
+    token=None
+):
     return trello.TrelloClient(api_key, api_secret=api_secret, token=token)
 
 
@@ -210,7 +211,7 @@ class Webhook(models.Model):
         else:
             return self._create_remote()
 
-    def add_callback(self, body_text):
+    def add_callback(self, payload):
         """Add a new CallbackEvent instance and fire signal.
 
         This is called from the callback view, with the JSON body. It
@@ -219,12 +220,11 @@ class Webhook(models.Model):
         Returns the new CallbackEvent instance.
 
         """
-        payload = json.loads(body_text)
         action = payload['action']['type']
         event = CallbackEvent(
             webhook=self,
             event_type=action,
-            event_payload=body_text
+            event_payload=payload
         ).save()
         self.touch()
         signals.callback_received.send(sender=self.__class__, event=event)
@@ -238,9 +238,13 @@ class CallbackEvent(models.Model):
     # events are read-only so just a timestamp required
     timestamp = models.DateTimeField()
     # the Trello event type - moveCard, commentCard, etc.
-    event_type = models.CharField(max_length=50)
+    event_type = models.CharField(
+        max_length=50
+    )
     # the complete request payload, as JSON
-    event_payload = JSONField()
+    event_payload = JSONField(
+        default=dict()
+    )
 
     def __unicode__(self):
         if self.id:

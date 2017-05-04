@@ -7,6 +7,14 @@ the YunoJuno platfom developer test can be found in the separate `INSTRUCTIONS
 
 ----
 
+UPDATE
+------
+
+This project now uses the native Postgres `JSONField <https://docs.djangoproject.com/en/1.9/ref/contrib/postgres/fields/#jsonfield>`_, and therefore no longer
+supports Django 1.8 and below. It will also require a local Postgresql instance
+to run the test suite. (If you don't have Postgres locally and are on a Mac,
+you can install `Postgres.app <https://postgresapp.com/>`_ and use the default settings.)
+
 Background
 ----------
 

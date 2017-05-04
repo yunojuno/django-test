@@ -1,11 +1,11 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
-from trello_webhooks import views
+from . import views
 
-urlpatterns = patterns(views,
+urlpatterns = [
     url(
         r'^(?P<auth_token>\w+)/(?P<trello_model_id>\w+)/$',
         views.api_callback,
         name="trello_callback_url"
     ),
-)
+]

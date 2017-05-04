@@ -1,5 +1,4 @@
 # # -*- coding: utf-8 -*-
-# trello_webhooks.signals
 from django.dispatch import Signal
 
 # The callback_received signal is fired when a webhook is called by Trello.

@@ -1,10 +1,13 @@
-# # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
+import json
 import logging
 
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseNotAllowed
 from django.views.decorators.csrf import csrf_exempt
 
-from trello_webhooks.models import Webhook
+from .models import Webhook
 
 logger = logging.getLogger(__name__)
 
@@ -42,11 +45,9 @@ def api_callback(request, auth_token, trello_model_id):
     if request.method == 'POST':
         logger.info(u"Trello event callback received for '%s'", trello_model_id)
         try:
-            (
-                Webhook.objects
-                .get(auth_token=auth_token, trello_model_id=trello_model_id)
-                .add_callback(request.body)
-            )
+            webhook = Webhook.objects.get(auth_token=auth_token, trello_model_id=trello_model_id)
+            payload = json.loads(request.body)
+            webhook.add_callback(payload)
             return HttpResponse("Message received")
         except Webhook.DoesNotExist:
             logger.warning(u"No webhook found for %s:%s", trello_model_id, trello_model_id)  # noqa

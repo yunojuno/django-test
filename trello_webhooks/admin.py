@@ -10,8 +10,8 @@ from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from django.template.defaultfilters import truncatewords, truncatechars
 
-from trello_webhooks.models import Webhook, CallbackEvent
-from trello_webhooks.forms import WebhookForm
+from .forms import WebhookForm
+from .models import Webhook, CallbackEvent
 
 logger = logging.getLogger(__name__)
 

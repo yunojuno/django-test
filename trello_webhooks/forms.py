@@ -3,7 +3,7 @@
 from django import forms
 from django.utils.safestring import mark_safe
 
-from trello_webhooks.models import Webhook
+from .models import Webhook
 
 
 class TrelloTokenWidget(forms.TextInput):
