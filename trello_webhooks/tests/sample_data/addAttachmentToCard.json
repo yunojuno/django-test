@@ -1,0 +1,81 @@
+{
+    "action": {
+        "data": {
+            "attachment": {
+                "id": "58f2ab11727e357782b9fa62",
+                "name": "Screen Shot 2017-04-15 at 23.07.41.png",
+                "previewUrl": "https://trello-attachments.s3.amazonaws.com/58f1fedc877297dfb015fe53/600x282/8ab61dd4cdc7e84d2355599ab9601d2b/Screen_Shot_2017-04-15_at_23.07.41.png",
+                "previewUrl2x": "https://trello-attachments.s3.amazonaws.com/58f1fedc877297dfb015fe44/58f1fedc877297dfb015fe53/b91c0c3dea83c301677eb66b10cddca3/Screen_Shot_2017-04-15_at_23.07.41.png",
+                "url": "https://trello-attachments.s3.amazonaws.com/58f1fedc877297dfb015fe44/58f1fedc877297dfb015fe53/b91c0c3dea83c301677eb66b10cddca3/Screen_Shot_2017-04-15_at_23.07.41.png"
+            },
+            "board": {
+                "id": "58f1fedc877297dfb015fe44",
+                "name": "*Tutorial Board (Start Here!)",
+                "shortLink": "Usqf8yEY"
+            },
+            "card": {
+                "id": "58f1fedc877297dfb015fe53",
+                "idShort": 3,
+                "name": "\u0141adny piesek",
+                "shortLink": "GSGD01GH"
+            },
+            "list": {
+                "id": "58f1fedc877297dfb015fe45",
+                "name": "Stuff To Try (this is a list)"
+            }
+        },
+        "date": "2017-04-15T23:21:53.738Z",
+        "id": "58f2ab11727e357782b9fa63",
+        "idMemberCreator": "58f1fedc877297dfb015fe42",
+        "memberCreator": {
+            "avatarHash": null,
+            "fullName": "Marcin",
+            "id": "58f1fedc877297dfb015fe42",
+            "initials": "M",
+            "username": "marcin11961960"
+        },
+        "type": "addAttachmentToCard"
+    },
+    "model": {
+        "closed": false,
+        "desc": "",
+        "descData": null,
+        "id": "58f1fedc877297dfb015fe44",
+        "idOrganization": null,
+        "labelNames": {
+            "black": "",
+            "blue": "",
+            "green": "This is a green label",
+            "lime": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "sky": "",
+            "yellow": ""
+        },
+        "name": "*Tutorial Board (Start Here!)",
+        "pinned": false,
+        "prefs": {
+            "background": "sky",
+            "backgroundBrightness": "dark",
+            "backgroundColor": "#00AECC",
+            "backgroundImage": null,
+            "backgroundImageScaled": null,
+            "backgroundTile": false,
+            "calendarFeedEnabled": false,
+            "canBeOrg": true,
+            "canBePrivate": true,
+            "canBePublic": true,
+            "canInvite": true,
+            "cardCovers": true,
+            "comments": "members",
+            "invitations": "members",
+            "permissionLevel": "private",
+            "selfJoin": true,
+            "voting": "disabled"
+        },
+        "shortUrl": "https://trello.com/b/Usqf8yEY",
+        "url": "https://trello.com/b/Usqf8yEY/tutorial-board-start-here"
+    }
+}
