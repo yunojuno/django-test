@@ -10,9 +10,11 @@ from django.utils import timezone
 
 from jsonfield import JSONField
 import trello
+from requests.exceptions import MissingSchema, ConnectionError
 
 from trello_webhooks import settings
 from trello_webhooks import signals
+import requests
 
 logger = logging.getLogger(__name__)
 
@@ -266,6 +268,7 @@ class CallbackEvent(models.Model):
     def save(self, *args, **kwargs):
         """Update timestamp"""
         self.timestamp = timezone.now()
+        self.set_attachment_content_type()
         super(CallbackEvent, self).save(*args, **kwargs)
         return self
 
@@ -293,6 +296,11 @@ class CallbackEvent(models.Model):
     def card(self):
         """Returns 'card' JSON extracted from event_payload."""
         return self.action_data.get('card') if self.action_data else None
+
+    @property
+    def attachment(self):
+        """Returns 'attachment' JSON extracted from event_payload."""
+        return self.action_data.get('attachment') if self.action_data else None
 
     @property
     def member_name(self):
@@ -347,3 +355,27 @@ class CallbackEvent(models.Model):
                 self.template
             )
             return None
+
+    def set_attachment_content_type(self):
+        """
+        Resolve Attachment content type
+        Make HEAD request to find out content type
+        Returns:
+            None
+        """
+        attachment = self.attachment
+
+        if attachment:
+            try:
+                response = requests.head(attachment.get('url'))
+                self.event_payload['action']['data']['attachment']['content_type'] =\
+                    response.headers['Content-Type']
+            except ConnectionError as e:
+                logger.warning(
+                    u'HTTP Connection Error: %s. URL: %s', e, attachment.get('url'))
+            except MissingSchema as e:
+                logger.warning(
+                    u'Missing schema or no `url` parameter passed in attachment: %s. URL: %s',
+                    e, attachment.get('url'))
+            except Exception as e:
+                logger.warning(u'An error occurred: %s. URL: %s', e, attachment.get('url'))
