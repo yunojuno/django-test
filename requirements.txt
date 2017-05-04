@@ -2,7 +2,6 @@
 appdirs==1.4.3
 dj-database-url==0.4.2
 # Django==1.9
-django-jsonfield==1.0.1
 oauthlib==2.0.2
 packaging==16.8
 psycopg2==2.7.1
