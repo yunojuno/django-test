@@ -17,7 +17,9 @@ Which renders as:
 
 ![screen shot 2014-12-08 at 12 52 48](https://cloud.githubusercontent.com/assets/200944/5339479/43f141b4-7ed9-11e4-8188-f316ab4c7286.png)
 
-Whilst this works for all attachment types, HipChat can display image attachments inline, within the chat, when rendered as HTML.
+Whilst this works for all attachment types, HipChat can display image attachments inline, within the chat, when rendered as HTML:
+
+![screen shot 2014-12-08 at 12 52 48](https://cloud.githubusercontent.com/assets/200944/25693195/e1c15ab2-309f-11e7-8fa3-67d4fee42cfd.png)
 
 ---
 
