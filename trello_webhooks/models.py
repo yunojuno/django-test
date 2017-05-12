@@ -1,6 +1,7 @@
 # # -*- coding: utf-8 -*-
 import json
 import logging
+import requests
 
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -236,11 +237,11 @@ class CallbackEvent(models.Model):
     # ref to the webhook that picked up the event
     webhook = models.ForeignKey(Webhook)
     # events are read-only so just a timestamp required
-    timestamp = models.DateTimeField()
+    timestamp = models.DateTimeField(auto_now=True)
     # the Trello event type - moveCard, commentCard, etc.
     event_type = models.CharField(max_length=50)
     # the complete request payload, as JSON
-    event_payload = JSONField()
+    event_payload = JSONField(default={})
 
     def __unicode__(self):
         if self.id:
@@ -264,8 +265,10 @@ class CallbackEvent(models.Model):
         )
 
     def save(self, *args, **kwargs):
-        """Update timestamp"""
-        self.timestamp = timezone.now()
+        """Add content-type to event payload."""
+        attachment_data = self.event_payload.get('action', {}).get('data', {}).get('attachment')
+        if attachment_data is not None:
+            attachment_data['content_type'] = self.attachment_content_type
         super(CallbackEvent, self).save(*args, **kwargs)
         return self
 
@@ -318,6 +321,15 @@ class CallbackEvent(models.Model):
     def template(self):
         """Return full path to render template, based on event_type."""
         return 'trello_webhooks/%s.html' % self.event_type
+
+    @property
+    def attachment_content_type(self):
+        """
+        Return attachment content type
+        Make request and get content-type from response
+        """
+        attachment_url = self.event_payload.get('action', {}).get('data', {}).get('attachment', {}).get('url')
+        return requests.get(attachment_url).headers.get('Content-Type') if attachment_url else None
 
     def render(self):
         """Render the event using an HTML template.
