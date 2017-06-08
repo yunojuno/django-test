@@ -3,7 +3,7 @@
 
 [![Build Status](https://travis-ci.org/scheung38/django-test.svg?branch=master)](https://travis-ci.org/scheung38/django-test)
 
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
+[![license](https://img.shields.io/github/license/scheung38/django-test.svg)]()
 
 This README describes the project as a whole. Instructions on how to complete
 the YunoJuno platfom developer test can be found in the separate `INSTRUCTIONS
