@@ -1,6 +1,10 @@
 .. image:: https://travis-ci.org/yunojuno/django-test.svg?branch=master
     :target: https://travis-ci.org/yunojuno/django-test
 
+[![Build Status](https://travis-ci.org/scheung38/django-test.svg?branch=master)](https://travis-ci.org/scheung38/django-test)
+
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
+
 This README describes the project as a whole. Instructions on how to complete
 the YunoJuno platfom developer test can be found in the separate `INSTRUCTIONS
 <INSTRUCTIONS.md>`_ file in the root of the project.
@@ -9,6 +13,7 @@ the YunoJuno platfom developer test can be found in the separate `INSTRUCTIONS
 
 Background
 ----------
+
 
 Trello is a very simple web app that manages lists of cards on a board - it's
 like a digital pinboard. You can create cards, comment on them, add
