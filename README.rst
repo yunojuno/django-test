@@ -1,9 +1,6 @@
 .. image:: https://travis-ci.org/yunojuno/django-test.svg?branch=master
     :target: https://travis-ci.org/yunojuno/django-test
 
-.. image:: https://travis-ci.org/scheung38/django-test.svg?branch=master
-    :target: https://travis-ci.org/scheung38/django-test
-
 .. image:: https://img.shields.io/github/license/scheung38/django-test.svg
 
 This README describes the project as a whole. Instructions on how to complete
