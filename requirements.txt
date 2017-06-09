@@ -1,5 +1,17 @@
-# Django==1.7.1
+certifi==2017.4.17
+chardet==3.0.4
 dj-database-url==0.3.0
+Django==1.11.2
 django-jsonfield==0.9.13
-git+https://github.com/sarumont/py-trello.git@766c90dc1dacd2e3fcfc579079a6aab38be43aef
+django-trello-webhooks==0.3
+idna==2.5
+oauthlib==2.0.2
 psycopg2==2.5.4
+py-trello==0.2.3
+pyspark==2.1.1+hadoop2.7
+python-dateutil==2.6.0
+pytz==2017.2
+requests==2.17.3
+requests-oauthlib==0.8.0
+six==1.10.0
+urllib3==1.21.1
