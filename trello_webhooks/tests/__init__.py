@@ -1,5 +1,6 @@
 # trello_webhooks.tests package
 import json
+import mock
 from os import path
 
 
@@ -18,3 +19,9 @@ def get_sample_data(action, format_):
     )
     with open(_path, 'r') as f:
         return f.read() if format_ == 'text' else json.load(f)
+
+
+def get_mock_response(content_type):
+    response = mock.MagicMock()
+    response.headers = {'Content-Type': content_type}
+    return response

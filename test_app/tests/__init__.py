@@ -1,7 +1,7 @@
 # trello_webhooks.tests package
 import json
-from os import path
 import mock
+from os import path
 
 
 def get_sample_data(action, format_):
