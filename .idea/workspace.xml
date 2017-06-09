@@ -2,10 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e7441ac1-72cb-4740-be50-d084ab3a151d" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test_app/templates/trello_webhooks/addAttachmentToCard.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test_app/templatetags/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test_app/templatetags/hipchat_tags.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test_app/tests/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test_app/tests/test_models.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test_app/tests/test_rendering.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test_app/test_settings.py" afterPath="$PROJECT_DIR$/test_app/test_settings.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -17,6 +18,8 @@
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/django_test$Test__trello_webhooks_tests.coverage" NAME="Test: trello_webhooks.tests Coverage Results" MODIFIED="1497027791052" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/django_test$manage.coverage" NAME="manage Coverage Results" MODIFIED="1497048887037" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/django_test$Test__test_app_tests_test_rendering.coverage" NAME="Test: test_app.tests.test_rendering Coverage Results" MODIFIED="1497050584631" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/django_test$Test__test_app_tests_test_models.coverage" NAME="Test: test_app.tests.test_models Coverage Results" MODIFIED="1497050273068" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
   <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
     <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
@@ -27,11 +30,35 @@
       <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/trello_webhooks/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="278">
-              <caret line="277" column="55" lean-forward="true" selection-start-line="277" selection-start-column="55" selection-end-line="277" selection-end-column="55" />
+            <state relative-caret-position="-791">
+              <caret line="271" column="74" lean-forward="false" selection-start-line="271" selection-start-column="74" selection-end-line="271" selection-end-column="74" />
               <folding>
                 <element signature="e#26#37#0" expanded="true" />
                 <element signature="e#1287#7922#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/test_app/tests/__init__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="266">
+              <caret line="18" column="5" lean-forward="false" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
+              <folding>
+                <element signature="e#32#43#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_models.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test_app/tests/test_models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="17" column="0" lean-forward="true" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+              <folding>
+                <element signature="e#24#39#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -41,7 +68,7 @@
         <entry file="file://$PROJECT_DIR$/test_app/templates/trello_webhooks/updateComment.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="30">
-              <caret line="2" column="0" lean-forward="true" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+              <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -57,11 +84,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="hipchat_tags.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="hipchat_tags.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test_app/templatetags/hipchat_tags.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="8" column="41" lean-forward="true" selection-start-line="8" selection-start-column="41" selection-end-line="8" selection-end-column="41" />
+            <state relative-caret-position="195">
+              <caret line="13" column="42" lean-forward="false" selection-start-line="13" selection-start-column="42" selection-end-line="13" selection-end-column="42" />
               <folding>
                 <element signature="e#0#48#0" expanded="true" />
               </folding>
@@ -69,12 +96,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/trello_webhooks/settings.py">
+      <file leaf-file-name="test_settings.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test_app/test_settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="6" column="42" lean-forward="false" selection-start-line="6" selection-start-column="42" selection-end-line="6" selection-end-column="42" />
+            <state relative-caret-position="120">
+              <caret line="8" column="26" lean-forward="false" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_rendering.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test_app/tests/test_rendering.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="315">
+              <caret line="21" column="46" lean-forward="false" selection-start-line="21" selection-start-column="46" selection-end-line="21" selection-end-column="46" />
+              <folding>
+                <element signature="e#0#45#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -83,7 +122,7 @@
         <entry file="file://$PROJECT_DIR$/test_app/settings.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="51">
-              <caret line="83" column="0" lean-forward="true" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
+              <caret line="83" column="0" lean-forward="false" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
               <folding>
                 <element signature="e#24#52#0" expanded="true" />
               </folding>
@@ -142,6 +181,10 @@
         <option value="$PROJECT_DIR$/trello_webhooks/settings.py" />
         <option value="$PROJECT_DIR$/test_app/templates/trello_webhooks/addAttachmentToCard.html" />
         <option value="$PROJECT_DIR$/test_app/templatetags/hipchat_tags.py" />
+        <option value="$PROJECT_DIR$/test_app/test_settings.py" />
+        <option value="$PROJECT_DIR$/test_app/tests/test_rendering.py" />
+        <option value="$PROJECT_DIR$/test_app/tests/__init__.py" />
+        <option value="$PROJECT_DIR$/test_app/tests/test_models.py" />
       </list>
     </option>
   </component>
@@ -153,7 +196,7 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="651" />
-    <option name="y" value="439" />
+    <option name="y" value="101" />
     <option name="width" value="1029" />
     <option name="height" value="844" />
   </component>
@@ -205,6 +248,20 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="trello_webhooks" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="django-test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="django-test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="test_app" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -223,7 +280,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="templatetags" />
+              <option name="myItemId" value="tests" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -250,7 +307,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.manage">
+  <component name="RunManager" selected="Django tests.Test: test_app.tests.test_rendering">
     <configuration default="false" name="Test: trello_webhooks.tests" type="DjangoTestsConfigurationType" factoryName="Django tests" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -265,6 +322,50 @@
       <module name="django-test" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="TARGET" value="trello_webhooks.tests" />
+      <option name="SETTINGS_FILE" value="" />
+      <option name="CUSTOM_SETTINGS" value="false" />
+      <option name="USE_OPTIONS" value="false" />
+      <option name="OPTIONS" value="" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Test: test_app.tests.test_models" type="DjangoTestsConfigurationType" factoryName="Django tests" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="django-test" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="TARGET" value="test_app.tests.test_models" />
+      <option name="SETTINGS_FILE" value="" />
+      <option name="CUSTOM_SETTINGS" value="false" />
+      <option name="USE_OPTIONS" value="false" />
+      <option name="OPTIONS" value="" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Test: test_app.tests.test_rendering" type="DjangoTestsConfigurationType" factoryName="Django tests" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="TRELLO_API_SECRET" value="081f3e8de7d058315db0b3ce715d0705373a3066b940beac8adf1d5f2f723ea4" />
+        <env name="TRELLO_API_KEY" value="60a563c990694736c629d0d5f71564fa" />
+        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="DATABASE_URL" value="postgres://localhost/mincheung" />
+        <env name="CALLBACK_DOMAIN" value="http://2ff251c7.ngrok.io" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="django-test" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="TARGET" value="test_app.tests.test_rendering" />
       <option name="SETTINGS_FILE" value="" />
       <option name="CUSTOM_SETTINGS" value="false" />
       <option name="USE_OPTIONS" value="false" />
@@ -556,15 +657,19 @@
       <option name="customRunCommand" value="" />
       <method />
     </configuration>
-    <list size="4">
+    <list size="6">
       <item index="0" class="java.lang.String" itemvalue="Django server.django-test" />
       <item index="1" class="java.lang.String" itemvalue="Python.manage" />
       <item index="2" class="java.lang.String" itemvalue="Django server.makemigration" />
       <item index="3" class="java.lang.String" itemvalue="Django tests.Test: trello_webhooks.tests" />
+      <item index="4" class="java.lang.String" itemvalue="Django tests.Test: test_app.tests.test_models" />
+      <item index="5" class="java.lang.String" itemvalue="Django tests.Test: test_app.tests.test_rendering" />
     </list>
     <recent_temporary>
-      <list size="1">
-        <item index="0" class="java.lang.String" itemvalue="Django tests.Test: trello_webhooks.tests" />
+      <list size="3">
+        <item index="0" class="java.lang.String" itemvalue="Django tests.Test: test_app.tests.test_rendering" />
+        <item index="1" class="java.lang.String" itemvalue="Django tests.Test: test_app.tests.test_models" />
+        <item index="2" class="java.lang.String" itemvalue="Django tests.Test: trello_webhooks.tests" />
       </list>
     </recent_temporary>
   </component>
@@ -582,20 +687,40 @@
     <servers />
   </component>
   <component name="TestHistory">
+    <history-entry file="Test__test_app_tests_test_models - 2017.06.10 at 00h 17m 53s.xml">
+      <configuration name="Test: test_app.tests.test_models" configurationId="DjangoTestsConfigurationType" />
+    </history-entry>
+    <history-entry file="Test__test_app_tests_test_rendering - 2017.06.10 at 00h 17m 58s.xml">
+      <configuration name="Test: test_app.tests.test_rendering" configurationId="DjangoTestsConfigurationType" />
+    </history-entry>
+    <history-entry file="Test__test_app_tests_test_rendering - 2017.06.10 at 00h 19m 12s.xml">
+      <configuration name="Test: test_app.tests.test_rendering" configurationId="DjangoTestsConfigurationType" />
+    </history-entry>
+    <history-entry file="Test__test_app_tests_test_rendering - 2017.06.10 at 00h 20m 04s.xml">
+      <configuration name="Test: test_app.tests.test_rendering" configurationId="DjangoTestsConfigurationType" />
+    </history-entry>
+    <history-entry file="Test__test_app_tests_test_rendering - 2017.06.10 at 00h 20m 26s.xml">
+      <configuration name="Test: test_app.tests.test_rendering" configurationId="DjangoTestsConfigurationType" />
+    </history-entry>
+    <history-entry file="Test__test_app_tests_test_rendering - 2017.06.10 at 00h 21m 57s.xml">
+      <configuration name="Test: test_app.tests.test_rendering" configurationId="DjangoTestsConfigurationType" />
+    </history-entry>
+    <history-entry file="Test__test_app_tests_test_rendering - 2017.06.10 at 00h 23m 05s.xml">
+      <configuration name="Test: test_app.tests.test_rendering" configurationId="DjangoTestsConfigurationType" />
+    </history-entry>
     <history-entry file="Test__trello_webhooks_tests - 2017.06.09 at 18h 03m 11s.xml">
       <configuration name="Test: trello_webhooks.tests" configurationId="DjangoTestsConfigurationType" />
     </history-entry>
   </component>
   <component name="ToolWindowManager">
-    <frame x="651" y="439" width="1029" height="844" extended-state="0" />
-    <editor active="true" />
+    <frame x="651" y="101" width="1029" height="844" extended-state="0" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38031915" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.38031915" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2424594" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287858" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30585107" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30585107" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31205675" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -786,14 +911,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test_app/test_settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="47" lean-forward="false" selection-start-line="7" selection-start-column="47" selection-end-line="7" selection-end-column="47" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/trello_webhooks/templates/admin/trello_webhooks/webhook/change_form.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
@@ -944,20 +1061,9 @@
     <entry file="file://$PROJECT_DIR$/test_app/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
-          <caret line="83" column="0" lean-forward="true" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
+          <caret line="83" column="0" lean-forward="false" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
           <folding>
             <element signature="e#24#52#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/trello_webhooks/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="278">
-          <caret line="277" column="55" lean-forward="true" selection-start-line="277" selection-start-column="55" selection-end-line="277" selection-end-column="55" />
-          <folding>
-            <element signature="e#26#37#0" expanded="true" />
-            <element signature="e#1287#7922#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -965,7 +1071,7 @@
     <entry file="file://$PROJECT_DIR$/test_app/templates/trello_webhooks/updateComment.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
-          <caret line="2" column="0" lean-forward="true" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+          <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -980,10 +1086,59 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test_app/templatetags/hipchat_tags.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="41" lean-forward="true" selection-start-line="8" selection-start-column="41" selection-end-line="8" selection-end-column="41" />
+        <state relative-caret-position="195">
+          <caret line="13" column="42" lean-forward="false" selection-start-line="13" selection-start-column="42" selection-end-line="13" selection-end-column="42" />
           <folding>
             <element signature="e#0#48#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_app/test_settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="26" lean-forward="false" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_app/tests/test_rendering.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="21" column="46" lean-forward="false" selection-start-line="21" selection-start-column="46" selection-end-line="21" selection-end-column="46" />
+          <folding>
+            <element signature="e#0#45#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/trello_webhooks/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-791">
+          <caret line="271" column="74" lean-forward="false" selection-start-line="271" selection-start-column="74" selection-end-line="271" selection-end-column="74" />
+          <folding>
+            <element signature="e#26#37#0" expanded="true" />
+            <element signature="e#1287#7922#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_app/tests/test_models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="0" lean-forward="true" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+          <folding>
+            <element signature="e#24#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_app/tests/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="266">
+          <caret line="18" column="5" lean-forward="false" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
+          <folding>
+            <element signature="e#32#43#0" expanded="true" />
           </folding>
         </state>
       </provider>
