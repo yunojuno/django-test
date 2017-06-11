@@ -1,0 +1,26 @@
+version: '3'
+services:
+  db:
+    image: postgres
+  djangobox:
+    build: .
+    deploy:
+      resources:
+        reservations:
+          cpus: '1'
+          memory: 1024M
+    container_name: djangotest
+    hostname: djangotest
+    working_dir: /src
+    environment:
+      TRELLO_API_KEY: 'TRELLO_API_KEY'
+      TRELLO_API_SECRET: 'TRELLO_API_SECRET'
+      CALLBACK_DOMAIN: 'CALLBACK_DOMAIN'
+      DATABASE_URL: 'postgres://postgres:postgres@db:5432'
+    tty: true
+    volumes:
+      - .:/djangotest
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
