@@ -19,6 +19,12 @@ for s in MANDATORY_ENVIRONMENT_SETTINGS:
 TRELLO_API_KEY = environ['TRELLO_API_KEY']
 TRELLO_API_SECRET = environ['TRELLO_API_SECRET']
 CALLBACK_DOMAIN = environ['CALLBACK_DOMAIN']
+DATABASE_URL = environ['DATABASE_URL']
+
+print('TRELLO_API_KEY is : %s' % TRELLO_API_KEY)
+print('TRELLO_API_SECRET is : %s' % TRELLO_API_SECRET)
+
+
 # optional for the test app to send updates to HipChat
 HIPCHAT_API_TOKEN = environ.get('HIPCHAT_API_TOKEN', None)
 HIPCHAT_ROOM_ID = environ.get('HIPCHAT_ROOM_ID', None)
@@ -43,7 +49,7 @@ TIMEZONE = 'Europe/London'
 
 DATABASES = {
     # automatically assumes DATABASE_URL env var
-    'default': dj_database_url.config()
+    'default': dj_database_url.config(default=environ['DATABASE_URL'])
 }
 
 INSTALLED_APPS = (

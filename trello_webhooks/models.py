@@ -10,6 +10,7 @@ from django.utils import timezone
 
 from jsonfield import JSONField
 import trello
+import requests
 
 from trello_webhooks import settings
 from trello_webhooks import signals
@@ -23,6 +24,7 @@ def get_trello_client(api_key=settings.TRELLO_API_KEY,
                       api_secret=settings.TRELLO_API_SECRET,
                       token=None):  # noqa
     return trello.TrelloClient(api_key, api_secret=api_secret, token=token)
+    # return trello.TrelloApi(api_key, token=token)
 
 
 class TrelloWebhookManager(object):
@@ -266,6 +268,9 @@ class CallbackEvent(models.Model):
     def save(self, *args, **kwargs):
         """Update timestamp"""
         self.timestamp = timezone.now()
+        content_type = self.get_attachment_content_type()
+        if content_type:
+            self.action_data['attachment']['content_type'] = content_type
         super(CallbackEvent, self).save(*args, **kwargs)
         return self
 
@@ -318,6 +323,24 @@ class CallbackEvent(models.Model):
     def template(self):
         """Return full path to render template, based on event_type."""
         return 'trello_webhooks/%s.html' % self.event_type
+
+    def get_attachment_content_type(self):
+        """Get content attachment content-type"""
+
+        attachment = self.event_payload.get('action', {}).get('data', {}).get('attachment')
+        attachment_url = attachment.get('url')
+
+        if attachment and attachment_url:
+
+            try:
+                content_type = requests.head(attachment_url).headers.get('content-type')
+            except requests.exceptions.RequestException:
+                logger.warning(
+                    u"Cannot determine content type for attachment %s with URL %s",
+                    attachment.get('name'), attachment.get('url')
+                )
+            else:
+                return content_type
 
     def render(self):
         """Render the event using an HTML template.
