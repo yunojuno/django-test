@@ -1,0 +1,79 @@
+{
+    "action": {
+        "data": {
+            "attachment": {
+                "id": "593da9459575fbee92dc976c",
+                "name": "photo-1429308755210-25a272addeb3 (1).jpeg",
+                "previewUrl": "https://trello-attachments.s3.amazonaws.com/593da8d5932f51adaced4a56/600x401/af4f9672722b530bd97f7c6f54e3665e/photo-1429308755210-25a272addeb3_(1).jpeg.jpg",
+                "previewUrl2x": "https://trello-attachments.s3.amazonaws.com/593da8d5932f51adaced4a56/1200x801/82f7d581bf0291b591a9c7e13b8ab8ab/photo-1429308755210-25a272addeb3_(1).jpeg.jpg",
+                "url": "https://trello-attachments.s3.amazonaws.com/593d63cfa178bc3de21f9665/593da8d5932f51adaced4a56/d6b0a872ba16448b8e84546892e0e490/photo-1429308755210-25a272addeb3_(1).jpeg"
+            },
+            "board": {
+                "id": "593d63cfa178bc3de21f9665",
+                "name": "django-test",
+                "shortLink": "7dK5YR0X"
+            },
+            "card": {
+                "id": "593da8d5932f51adaced4a56",
+                "idShort": 26,
+                "name": "test123",
+                "shortLink": "1912LgaE"
+            },
+            "list": {
+                "id": "593da8511bdf7efdb3552a4f",
+                "name": "hello"
+            }
+        },
+        "date": "2017-06-11T20:34:15.637Z",
+        "display": {
+            "entities": {
+                "attachment": {
+                    "id": "593da9459575fbee92dc976c",
+                    "link": true,
+                    "previewUrl": "https://trello-attachments.s3.amazonaws.com/593da8d5932f51adaced4a56/600x401/af4f9672722b530bd97f7c6f54e3665e/photo-1429308755210-25a272addeb3_(1).jpeg.jpg",
+                    "previewUrl2x": "https://trello-attachments.s3.amazonaws.com/593da8d5932f51adaced4a56/1200x801/82f7d581bf0291b591a9c7e13b8ab8ab/photo-1429308755210-25a272addeb3_(1).jpeg.jpg",
+                    "text": "photo-1429308755210-25a272addeb3 (1).jpeg",
+                    "type": "attachment",
+                    "url": "https://trello-attachments.s3.amazonaws.com/593d63cfa178bc3de21f9665/593da8d5932f51adaced4a56/d6b0a872ba16448b8e84546892e0e490/photo-1429308755210-25a272addeb3_(1).jpeg"
+                },
+                "attachmentPreview": {
+                    "id": "593da9459575fbee92dc976c",
+                    "originalUrl": "https://trello-attachments.s3.amazonaws.com/593d63cfa178bc3de21f9665/593da8d5932f51adaced4a56/d6b0a872ba16448b8e84546892e0e490/photo-1429308755210-25a272addeb3_(1).jpeg",
+                    "previewUrl": "https://trello-attachments.s3.amazonaws.com/593da8d5932f51adaced4a56/600x401/af4f9672722b530bd97f7c6f54e3665e/photo-1429308755210-25a272addeb3_(1).jpeg.jpg",
+                    "previewUrl2x": "https://trello-attachments.s3.amazonaws.com/593da8d5932f51adaced4a56/1200x801/82f7d581bf0291b591a9c7e13b8ab8ab/photo-1429308755210-25a272addeb3_(1).jpeg.jpg",
+                    "type": "attachmentPreview"
+                },
+                "card": {
+                    "id": "593da8d5932f51adaced4a56",
+                    "shortLink": "1912LgaE",
+                    "text": "test123",
+                    "type": "card"
+                },
+                "memberCreator": {
+                    "id": "58132cbbf2d4e2973c66fc5a",
+                    "text": "Dan",
+                    "type": "member",
+                    "username": "dan21036807"
+                }
+            },
+            "translationKey": "action_add_attachment_to_card"
+        },
+        "id": "593da9479575fbee92dc9788",
+        "idMemberCreator": "58132cbbf2d4e2973c66fc5a",
+        "memberCreator": {
+            "avatarHash": "09ccc5bf325c40cb5431cc6f165d9b53",
+            "fullName": "Dan",
+            "id": "58132cbbf2d4e2973c66fc5a",
+            "initials": "D",
+            "username": "dan21036807"
+        },
+        "type": "addAttachmentToCard"
+    },
+    "model": {
+        "closed": false,
+        "id": "593da8511bdf7efdb3552a4f",
+        "idBoard": "593d63cfa178bc3de21f9665",
+        "name": "hello",
+        "pos": 73727
+    }
+}

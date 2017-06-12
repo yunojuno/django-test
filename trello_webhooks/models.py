@@ -10,9 +10,13 @@ from django.utils import timezone
 
 from jsonfield import JSONField
 import trello
+import requests
 
-from trello_webhooks import settings
-from trello_webhooks import signals
+from trello_webhooks import (
+    settings,
+    signals,
+    utils
+)
 
 logger = logging.getLogger(__name__)
 
@@ -266,8 +270,26 @@ class CallbackEvent(models.Model):
     def save(self, *args, **kwargs):
         """Update timestamp"""
         self.timestamp = timezone.now()
+        self.retrieve_attachment_content_type()
         super(CallbackEvent, self).save(*args, **kwargs)
         return self
+
+    def retrieve_attachment_content_type(self):
+        """Extend payload data with attachment content-type."""
+        if self.event_type == "addAttachmentToCard":
+            content_type = ""
+            r = requests.get(self.attachment_url)
+            if r.status_code == requests.codes.ok:
+                content_type = r.headers['Content-Type']
+            else:
+                logger.error(
+                    u"Failed to retrieve attachment url: %s",
+                    self.attachment_url
+                )
+
+            path = ['action', 'data', 'attachment']
+            attachment = utils.dictget(self.event_payload, *path)
+            attachment['content_type'] = content_type
 
     @property
     def action_data(self):
@@ -318,6 +340,33 @@ class CallbackEvent(models.Model):
     def template(self):
         """Return full path to render template, based on event_type."""
         return 'trello_webhooks/%s.html' % self.event_type
+
+    @property
+    def attachment_url(self):
+        """Return trello card attachment url."""
+        path = ['action', 'data', 'attachment', 'url']
+        url = utils.dictget(self.event_payload, *path)
+        if url:
+            return url
+        logger.warning(
+            u"Failed to retrieve attachment url from payload: callback id: %s",
+            self.id
+        )
+        return None
+
+    @property
+    def attachment_content_type(self):
+        """Return content type of trello card attachment."""
+        path = ['action', 'data', 'attachment', 'content_type']
+        contenttype = utils.dictget(self.event_payload, *path)
+        if contenttype:
+            return contenttype
+        logger.warning(
+            u"Failed to retrieve attachment content-type from \
+            payload: callback id: %s",
+            self.id
+        )
+        return None
 
     def render(self):
         """Render the event using an HTML template.

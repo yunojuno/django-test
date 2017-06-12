@@ -12,5 +12,6 @@ DATABASES = {
 
 # the django apps aren't required for the tests,
 INSTALLED_APPS = (
+    'test_app',
     'trello_webhooks',
 )
