@@ -4,7 +4,7 @@ from django.template import loader, Context
 
 
 class TemplateTagTests(TestCase):
-    """Test Cases for template tags."""
+    """Test Cases for template tags module."""
 
     def setUp(self):
         """Setup test."""
@@ -30,9 +30,9 @@ class TemplateTagTests(TestCase):
 
     def test_successful_image_content_html_rendering(self):
         """Test html image tags render when content type is image."""
-        t = loader.get_template(self.template)
-        c = Context({'action': self.action_data_image})
-        rendered = t.render(c)
+        template = loader.get_template(self.template)
+        context = Context({'action': self.action_data_image})
+        rendered = template.render(context)
 
         self.assertIn("attachment", rendered)
         self.assertIn("href", rendered)
@@ -41,9 +41,9 @@ class TemplateTagTests(TestCase):
 
     def test_failed_image_content_html_rendering(self):
         """Test html image tags do not render when content type is zipfile."""
-        t = loader.get_template(self.template)
-        c = Context({'action': self.action_data_zipfile})
-        rendered = t.render(c)
+        template = loader.get_template(self.template)
+        context = Context({'action': self.action_data_zipfile})
+        rendered = template.render(context)
 
         self.assertIn("attachment", rendered)
         self.assertIn("href", rendered)

@@ -10,10 +10,14 @@ ENV PYTHONUNBUFFERED 1
 RUN mkdir /src
 WORKDIR /src
 RUN virtualenv /venv
-RUN /bin/bash -c "source /venv/bin/activate"
-ADD requirements.txt /src/
-RUN /bin/bash -c "pip install -r requirements.txt"
 ADD . /src/
+
+# pip global
+RUN /bin/bash -c "pip install -r requirements-tox.txt"
+
+# pip virtualenv
+RUN /bin/bash -c "source /venv/bin/activate \
+    && pip install -r requirements.txt"
 
 # Ports
 EXPOSE 8000

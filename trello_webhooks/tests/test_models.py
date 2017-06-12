@@ -5,8 +5,7 @@ import mock
 
 from django.core.urlresolvers import reverse
 from django.test import TestCase
-
-import trello
+from django.utils import timezone
 
 from trello_webhooks.models import Webhook, CallbackEvent
 from trello_webhooks.settings import (
@@ -256,8 +255,42 @@ class WebhookModelTests(TestCase):
 
 class CallbackEventModelTest(TestCase):
 
+    @mock.patch('trello_webhooks.models.Webhook._trello_sync', mock_trello_sync)
     def test_default_properties(self):
-        pass
+        # Default model data
+        self.empty_webhook = Webhook()
+        self.empty_webhook.save()
+        self.empty_callbackevent = CallbackEvent(
+            webhook=self.empty_webhook)
+        self.empty_callbackevent.save()
+        self.assertNotEqual(self.empty_callbackevent.id, None)
+        self.assertTrue(self.empty_callbackevent.timestamp)
+        self.assertEqual(self.empty_callbackevent.event_type, '')
+        self.assertEqual(type(self.empty_callbackevent.event_payload).__name__, 'dict')
+
+    @mock.patch('trello_webhooks.models.Webhook._trello_sync', mock_trello_sync)
+    def test_properties(self):
+        # Populated model data
+        self.webhook = Webhook(
+            auth_token='12345678911111',
+            trello_model_id='111111111111111111111111',
+            trello_id='222222222222222222222222',
+            description="Foo-Bar"
+        )
+        self.webhook.save()
+        self.callbackevent = CallbackEvent(
+            webhook=self.webhook,
+            timestamp=timezone.now(),
+            event_type='addAttachmentToCard',
+            event_payload=get_sample_data('addAttachmentToCard', 'text')
+        )
+        self.callbackevent.save()
+        self.assertNotEqual(self.callbackevent.id, None)
+        self.assertTrue(self.callbackevent.timestamp)
+        self.assertEqual(self.callbackevent.event_type, 'addAttachmentToCard')
+        self.assertEqual(type(self.callbackevent.event_payload).__name__, 'dict')
+        self.assertIn('action', self.callbackevent.event_payload.keys())
+        self.assertIn('model', self.callbackevent.event_payload.keys())
 
     def test_save(self):
         pass

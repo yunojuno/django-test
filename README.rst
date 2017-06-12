@@ -102,7 +102,7 @@ template. The ``CallbackEvent`` model has a ``render`` method that
 passes the entire JSON payload into the relevant template as the
 template context, so that you can extract the data.
 
-Below is an example of the default ``commendCard.html`` template.
+Below is an example of the default ``commentCard.html`` template.
 
 .. code:: html
 
