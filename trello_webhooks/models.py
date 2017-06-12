@@ -276,19 +276,20 @@ class CallbackEvent(models.Model):
 
     def retrieve_attachment_content_type(self):
         """Extend payload data with attachment content-type."""
-        content_type = ""
-        r = requests.get(self.attachment_url)
-        if r.status_code == requests.codes.ok:
-            content_type = r.headers['Content-Type']
-        else:
-            logger.error(
-                u"Failed to retrieve attachment url: %s",
-                self.attachment_url
-            )
+        if self.event_type == "addAttachmentToCard":
+            content_type = ""
+            r = requests.get(self.attachment_url)
+            if r.status_code == requests.codes.ok:
+                content_type = r.headers['Content-Type']
+            else:
+                logger.error(
+                    u"Failed to retrieve attachment url: %s",
+                    self.attachment_url
+                )
 
-        path = ['action', 'data', 'attachment']
-        attachment = utils.dictget(self.event_payload, *path)
-        attachment['content-type'] = content_type
+            path = ['action', 'data', 'attachment']
+            attachment = utils.dictget(self.event_payload, *path)
+            attachment['content_type'] = content_type
 
     @property
     def action_data(self):
@@ -356,7 +357,7 @@ class CallbackEvent(models.Model):
     @property
     def attachment_content_type(self):
         """Return content type of trello card attachment."""
-        path = ['action', 'data', 'attachment', 'content-type']
+        path = ['action', 'data', 'attachment', 'content_type']
         contenttype = utils.dictget(self.event_payload, *path)
         if contenttype:
             return contenttype

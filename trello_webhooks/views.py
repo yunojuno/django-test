@@ -42,6 +42,7 @@ def api_callback(request, auth_token, trello_model_id):
     if request.method == 'POST':
         logger.info(u"Trello event callback received for '%s'", trello_model_id)
         try:
+            logger.debug(request.body)
             (
                 Webhook.objects
                 .get(auth_token=auth_token, trello_model_id=trello_model_id)
