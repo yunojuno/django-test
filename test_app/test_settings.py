@@ -14,3 +14,4 @@ DATABASES = {
 INSTALLED_APPS = (
     'trello_webhooks', 'test_app'
 )
+

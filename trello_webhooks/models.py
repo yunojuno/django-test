@@ -24,6 +24,7 @@ def get_trello_client(api_key=settings.TRELLO_API_KEY,
                       api_secret=settings.TRELLO_API_SECRET,
                       token=None):  # noqa
     return trello.TrelloClient(api_key, api_secret=api_secret, token=token)
+    # return trello.TrelloApi(api_key, token=token)
 
 
 class TrelloWebhookManager(object):
@@ -269,7 +270,7 @@ class CallbackEvent(models.Model):
         self.timestamp = timezone.now()
         content_type = self.get_attachment_content_type()
         if content_type:
-            self.action_data['attachement']['content_type'] = content_type
+            self.action_data['attachment']['content_type'] = content_type
         super(CallbackEvent, self).save(*args, **kwargs)
         return self
 
