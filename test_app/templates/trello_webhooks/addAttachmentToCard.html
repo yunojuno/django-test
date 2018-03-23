@@ -1,0 +1,4 @@
+{%  load card_attachment_text %}
+<strong>{{action.memberCreator.initials}}</strong> added attachment "<strong>
+    <a href="{{action.data.attachment.url}}">{{action.data| card_attachment_text }}</a>
+</strong>"
