@@ -1,7 +1,9 @@
 # # -*- coding: utf-8 -*-
 import json
 import logging
+import mimetypes
 
+import requests
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.template import TemplateDoesNotExist
@@ -264,8 +266,13 @@ class CallbackEvent(models.Model):
         )
 
     def save(self, *args, **kwargs):
-        """Update timestamp"""
+        """Update timestamp and sets attachment content-type if needed"""
         self.timestamp = timezone.now()
+        # getting content-type is expensive action
+        # so we should call it only if attachment exists and once
+        if self.attachment:
+            self.event_payload['action']['data']['attachment']['content_type'] =\
+                self.get_attachment_content_type()
         super(CallbackEvent, self).save(*args, **kwargs)
         return self
 
@@ -295,6 +302,11 @@ class CallbackEvent(models.Model):
         return self.action_data.get('card') if self.action_data else None
 
     @property
+    def attachment(self):
+        """Returns 'attachment' JSON extracted from event_payload."""
+        return self.action_data.get('attachment') if self.action_data else None
+
+    @property
     def member_name(self):
         """Return member name if it exists (used in admin)."""
         return self.member.get('fullName') if self.member else None
@@ -318,6 +330,27 @@ class CallbackEvent(models.Model):
     def template(self):
         """Return full path to render template, based on event_type."""
         return 'trello_webhooks/%s.html' % self.event_type
+
+    def get_attachment_content_type(self):
+        """Gets content type for attachment.
+
+        For getting content type this method use request library and
+        response headers. Also all exceptions during the request are
+        caught and default content type (text/plain) will be returned.
+
+        Returns content type like a string
+        """
+        content_type = None
+
+        if self.attachment:
+            url = self.attachment.get('url')
+            try:
+                response = requests.get(url)
+                content_type = response.headers['content-type']
+            except Exception:
+                content_type = 'text/plain'
+
+        return content_type
 
     def render(self):
         """Render the event using an HTML template.

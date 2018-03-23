@@ -2,7 +2,10 @@
 import datetime
 import json
 import mock
+import requests
+import requests_mock
 
+from ddt import ddt, data
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 
@@ -254,6 +257,7 @@ class WebhookModelTests(TestCase):
         # other CallbackEvent properties are tested in CallbackEvent tests
 
 
+@ddt
 class CallbackEventModelTest(TestCase):
 
     def test_default_properties(self):
@@ -292,6 +296,12 @@ class CallbackEventModelTest(TestCase):
         ce.event_payload = get_sample_data('createCard', 'text')
         self.assertEqual(ce.card, ce.event_payload['action']['data']['card'])
 
+    def test_attachment(self):
+        ce = CallbackEvent()
+        self.assertEqual(ce.attachment, None)
+        ce.event_payload = get_sample_data('addAttachmentToCard', 'text')
+        self.assertEqual(ce.attachment, ce.event_payload['action']['data']['attachment'])
+
     def test_member_name(self):
         ce = CallbackEvent()
         self.assertEqual(ce.member_name, None)
@@ -315,3 +325,51 @@ class CallbackEventModelTest(TestCase):
         self.assertEqual(ce.card_name, None)
         ce.event_payload = get_sample_data('createCard', 'text')
         self.assertEqual(ce.card_name, ce.event_payload['action']['data']['card']['name'])  # noqa
+
+    @data(
+        'text/plain',
+        'images/png',
+        'my_awesome_header',
+        ''
+    )
+    def test_get_attachment_content_type_success(self, expected_content_type):
+        ce = CallbackEvent()
+        ce.event_payload = get_sample_data('addAttachmentToCard', 'text')
+        url = ce.event_payload['action']['data']['attachment']['url']
+        headers = {
+            'content-type': expected_content_type
+        }
+        with requests_mock.mock() as m:
+            m.get(url, headers=headers)
+            content_type = ce.get_attachment_content_type()
+
+        self.assertEqual(content_type, expected_content_type)
+        self.assertEqual(m.call_count, 1)
+
+    @data(
+        requests.ConnectionError,
+        requests.Timeout,
+        requests.TooManyRedirects,
+        Exception,
+    )
+    def test_get_attachment_content_type_error(self, exception):
+        ce = CallbackEvent()
+        ce.event_payload = get_sample_data('addAttachmentToCard', 'text')
+        url = ce.event_payload['action']['data']['attachment']['url']
+
+        with requests_mock.mock() as m:
+            m.get(url, exc=exception)
+            content_type = ce.get_attachment_content_type()
+
+        self.assertEqual(content_type, 'text/plain')
+        self.assertEqual(m.call_count, 1)
+
+    def test_get_attachment_content_type_without_attachment(self):
+        ce = CallbackEvent()
+        ce.event_payload = get_sample_data('createCard', 'text')
+
+        with requests_mock.mock() as m:
+            content_type = ce.get_attachment_content_type()
+
+        self.assertEqual(content_type, None)
+        self.assertEqual(m.call_count, 0)
