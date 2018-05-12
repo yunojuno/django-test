@@ -9,6 +9,7 @@ from django.template.loader import render_to_string
 from django.utils import timezone
 
 from jsonfield import JSONField
+import requests
 import trello
 
 from trello_webhooks import settings
@@ -263,9 +264,27 @@ class CallbackEvent(models.Model):
             (self.id, self.webhook_id, self.event_type)
         )
 
+    def update_attachment_content_type(self):
+        """Update attachment with 'content_type' if missing."""
+        if self.attachment and 'content_type' not in self.attachment:
+            try:
+                response = requests.head(self.attachment['url'])
+                content_type = response.headers.get('Content-Type')
+                if content_type:
+                    self.attachment['content_type'] = content_type
+            except KeyError:
+                logger.warning(u"%s missing attachment url", repr(self))
+            except requests.exceptions.RequestException as ex:
+                logger.warning(
+                    u"%s failed to send HEAD request with attachment url: %s",
+                    repr(self), ex
+                )
+
     def save(self, *args, **kwargs):
-        """Update timestamp"""
+        """Update timestamp and extends attachment content type if missing"""
         self.timestamp = timezone.now()
+        # extend action_data with attachment content type if not existed
+        self.update_attachment_content_type()
         super(CallbackEvent, self).save(*args, **kwargs)
         return self
 
@@ -273,6 +292,11 @@ class CallbackEvent(models.Model):
     def action_data(self):
         """Returns the 'data' node from the payload."""
         return self.event_payload.get('action', {}).get('data')
+
+    @property
+    def attachment(self):
+        """Returns the 'attachment' JSON extracted from event_payload."""
+        return self.action_data.get('attachment') if self.action_data else None
 
     @property
     def member(self):
