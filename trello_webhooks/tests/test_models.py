@@ -6,6 +6,7 @@ import mock
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 
+import requests
 import trello
 
 from trello_webhooks.models import Webhook, CallbackEvent
@@ -259,6 +260,37 @@ class CallbackEventModelTest(TestCase):
     def test_default_properties(self):
         pass
 
+    @mock.patch('requests.head')
+    def test_update_attachment_content_type_with_image(self, mock_head):
+        mock_head.return_value = mock.MagicMock(status_code=200, headers={"Content-Type": "image/png"})  # noqa
+        ce = CallbackEvent()
+        ce.event_payload = get_sample_data('addAttachmentToCard', 'text')
+        self.assertIsNone(ce.attachment.get('content_type'))
+        ce.update_attachment_content_type()
+        self.assertEqual(ce.attachment.get('content_type'), 'image/png')
+        self.assertEqual(mock_head.call_count, 1)
+
+    @mock.patch('requests.head')
+    def test_update_attachment_content_type_not_image(self, mock_head):
+        mock_head.return_value = mock.MagicMock(status_code=200, headers={"Content-Type": "text/plain"})  # noqa
+        ce = CallbackEvent()
+        ce.event_payload = get_sample_data('addAttachmentToCard', 'text')
+        self.assertIsNone(ce.attachment.get('content_type'))
+        ce.update_attachment_content_type()
+        self.assertEqual(ce.attachment.get('content_type'), 'text/plain')
+        self.assertEqual(mock_head.call_count, 1)
+
+    @mock.patch('requests.head')
+    def test_update_attachment_content_type_exception(self, mock_head):
+        mock_head.side_effect = requests.exceptions.RequestException("Mock exception")  # noqa
+        ce = CallbackEvent()
+        ce.event_payload = get_sample_data('addAttachmentToCard', 'text')
+        self.assertIsNone(ce.attachment.get('content_type'))
+        # attachment is image but requests failed, method call without effect
+        ce.update_attachment_content_type()
+        self.assertIsNone(ce.attachment.get('content_type'))
+        self.assertEqual(mock_head.call_count, 1)
+
     def test_save(self):
         pass
 
@@ -267,6 +299,12 @@ class CallbackEventModelTest(TestCase):
         self.assertEqual(ce.action_data, None)
         ce.event_payload = get_sample_data('createCard', 'text')
         self.assertEqual(ce.action_data, ce.event_payload['action']['data'])
+
+    def test_attachment(self):
+        ce = CallbackEvent()
+        self.assertEqual(ce.attachment, None)
+        ce.event_payload = get_sample_data('addAttachmentToCard', 'text')
+        self.assertEqual(ce.attachment, ce.event_payload['action']['data']['attachment'])  # noqa
 
     def test_member(self):
         ce = CallbackEvent()
