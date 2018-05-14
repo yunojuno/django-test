@@ -225,7 +225,7 @@ class Webhook(models.Model):
         event = CallbackEvent(
             webhook=self,
             event_type=action,
-            event_payload=body_text
+            event_payload=payload
         ).save()
         self.touch()
         signals.callback_received.send(sender=self.__class__, event=event)
