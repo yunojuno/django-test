@@ -6,6 +6,7 @@ import mock
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 
+import requests
 import trello
 
 from trello_webhooks.models import Webhook, CallbackEvent
@@ -259,59 +260,96 @@ class CallbackEventModelTest(TestCase):
     def test_default_properties(self):
         pass
 
+    @mock.patch('requests.head')
+    def test_update_attachment_content_type_with_image(self, mock_head):
+        mock_head.return_value = mock.MagicMock(status_code=200, headers={"Content-Type": "image/png"})  # noqa
+        ce = CallbackEvent()
+        ce.event_payload = get_sample_data('addAttachmentToCard', 'json')
+        self.assertIsNone(ce.attachment.get('content_type'))
+        ce.update_attachment_content_type()
+        self.assertEqual(ce.attachment.get('content_type'), 'image/png')
+        self.assertEqual(mock_head.call_count, 1)
+
+    @mock.patch('requests.head')
+    def test_update_attachment_content_type_not_image(self, mock_head):
+        mock_head.return_value = mock.MagicMock(status_code=200, headers={"Content-Type": "text/plain"})  # noqa
+        ce = CallbackEvent()
+        ce.event_payload = get_sample_data('addAttachmentToCard', 'json')
+        self.assertIsNone(ce.attachment.get('content_type'))
+        ce.update_attachment_content_type()
+        self.assertEqual(ce.attachment.get('content_type'), 'text/plain')
+        self.assertEqual(mock_head.call_count, 1)
+
+    @mock.patch('requests.head')
+    def test_update_attachment_content_type_exception(self, mock_head):
+        mock_head.side_effect = requests.exceptions.RequestException("Mock exception")  # noqa
+        ce = CallbackEvent()
+        ce.event_payload = get_sample_data('addAttachmentToCard', 'json')
+        self.assertIsNone(ce.attachment.get('content_type'))
+        # attachment is image but requests failed, method call without effect
+        ce.update_attachment_content_type()
+        self.assertIsNone(ce.attachment.get('content_type'))
+        self.assertEqual(mock_head.call_count, 1)
+
     def test_save(self):
         pass
 
     def test_action_data(self):
         ce = CallbackEvent()
         self.assertEqual(ce.action_data, None)
-        ce.event_payload = get_sample_data('createCard', 'text')
+        ce.event_payload = get_sample_data('createCard', 'json')
         self.assertEqual(ce.action_data, ce.event_payload['action']['data'])
+
+    def test_attachment(self):
+        ce = CallbackEvent()
+        self.assertEqual(ce.attachment, None)
+        ce.event_payload = get_sample_data('addAttachmentToCard', 'json')
+        self.assertEqual(ce.attachment, ce.event_payload['action']['data']['attachment'])  # noqa
 
     def test_member(self):
         ce = CallbackEvent()
         self.assertEqual(ce.action_data, None)
-        ce.event_payload = get_sample_data('createCard', 'text')
+        ce.event_payload = get_sample_data('createCard', 'json')
         self.assertEqual(ce.member, ce.event_payload['action']['memberCreator'])
 
     def test_board(self):
         ce = CallbackEvent()
         self.assertEqual(ce.board, None)
-        ce.event_payload = get_sample_data('createCard', 'text')
+        ce.event_payload = get_sample_data('createCard', 'json')
         self.assertEqual(ce.board, ce.event_payload['action']['data']['board'])
 
     def test_list(self):
         ce = CallbackEvent()
         self.assertEqual(ce.list, None)
-        ce.event_payload = get_sample_data('createCard', 'text')
+        ce.event_payload = get_sample_data('createCard', 'json')
         self.assertEqual(ce.list, ce.event_payload['action']['data']['list'])
 
     def test_card(self):
         ce = CallbackEvent()
         self.assertEqual(ce.card, None)
-        ce.event_payload = get_sample_data('createCard', 'text')
+        ce.event_payload = get_sample_data('createCard', 'json')
         self.assertEqual(ce.card, ce.event_payload['action']['data']['card'])
 
     def test_member_name(self):
         ce = CallbackEvent()
         self.assertEqual(ce.member_name, None)
-        ce.event_payload = get_sample_data('createCard', 'text')
+        ce.event_payload = get_sample_data('createCard', 'json')
         self.assertEqual(ce.member_name, ce.event_payload['action']['memberCreator']['fullName'])  # noqa
 
     def test_board_name(self):
         ce = CallbackEvent()
         self.assertEqual(ce.board_name, None)
-        ce.event_payload = get_sample_data('createCard', 'text')
+        ce.event_payload = get_sample_data('createCard', 'json')
         self.assertEqual(ce.board_name, ce.event_payload['action']['data']['board']['name'])  # noqa
 
     def test_list_name(self):
         ce = CallbackEvent()
         self.assertEqual(ce.list_name, None)
-        ce.event_payload = get_sample_data('createCard', 'text')
+        ce.event_payload = get_sample_data('createCard', 'json')
         self.assertEqual(ce.list_name, ce.event_payload['action']['data']['list']['name'])  # noqa
 
     def test_card_name(self):
         ce = CallbackEvent()
         self.assertEqual(ce.card_name, None)
-        ce.event_payload = get_sample_data('createCard', 'text')
+        ce.event_payload = get_sample_data('createCard', 'json')
         self.assertEqual(ce.card_name, ce.event_payload['action']['data']['card']['name'])  # noqa
