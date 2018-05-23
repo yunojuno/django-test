@@ -255,6 +255,21 @@ class WebhookModelTests(TestCase):
 
 class CallbackEventModelTest(TestCase):
 
+    def test_str_contains_action_type(self):
+        webhook = Webhook().save(sync=False)
+        event = webhook.add_callback(get_sample_data('createCard', 'text'))
+        self.assertIn('createCard', str(event))
+
+    def test_unicode_contains_action_type(self):
+        webhook = Webhook().save(sync=False)
+        event = webhook.add_callback(get_sample_data('createCard', 'text'))
+        self.assertIn('createCard', unicode(event))
+
+    def test_repr_contains_action_type(self):
+        webhook = Webhook().save(sync=False)
+        event = webhook.add_callback(get_sample_data('createCard', 'text'))
+        self.assertIn('createCard', repr(event))
+
     def test_default_properties(self):
         pass
 
