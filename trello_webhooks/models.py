@@ -2,6 +2,7 @@
 import json
 import logging
 
+import requests
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.template import TemplateDoesNotExist
@@ -10,6 +11,7 @@ from django.utils import timezone
 
 from jsonfield import JSONField
 import trello
+from requests import RequestException
 
 from trello_webhooks import settings
 from trello_webhooks import signals
@@ -283,6 +285,16 @@ class CallbackEvent(models.Model):
     def attachment(self):
         """Returns 'attachment' JSON extracted from event_payload."""
         return self.action_data.get('attachment') if self.action_data else None
+
+    def fetch_attachment_content_type(self):
+        """Returns the content type of the attachment if it exists.
+
+        Returns None if there is no attachment
+
+        May raise an exception if the API request to Trello fails"""
+        if self.attachment:
+            response = requests.head(self.attachment['url'])
+            return response.headers['Content-Type']
 
     @property
     def board(self):

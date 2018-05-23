@@ -2,6 +2,8 @@
 import datetime
 import json
 import mock
+import requests
+import responses
 
 from django.core.urlresolvers import reverse
 from django.test import TestCase
@@ -277,6 +279,18 @@ class CallbackEventModelTest(TestCase):
         self.assertEqual(ce.attachment, None)
         ce.event_payload = get_sample_data('addAttachmentToCard', 'text')
         self.assertEqual(ce.attachment, ce.event_payload['action']['data']['attachment'])  # noqa
+
+    def test_attachment_context_type(self):
+        ce = CallbackEvent()
+        self.assertEqual(ce.attachment, None)
+        ce.event_payload = get_sample_data('addAttachmentToCard', 'text')
+        attachment_url = ce.event_payload['action']['data']['attachment']['url']
+
+        with responses.RequestsMock() as successful_response:
+            successful_response.add(
+                responses.HEAD, attachment_url, content_type='image/jpeg'
+            )
+            self.assertEqual(ce.fetch_attachment_content_type(), 'image/jpeg')
 
     def test_board(self):
         ce = CallbackEvent()
