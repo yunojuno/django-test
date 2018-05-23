@@ -332,10 +332,4 @@ class CallbackEventModelTest(TestCase):
         ce = CallbackEvent()
         self.assertEqual(ce.card_name, None)
         ce.event_payload = get_sample_data('createCard', 'text')
-        self.assertEqual(ce.card_name, ce.event_payload['action']['data']['card']['name'])  # noqa\
-
-    def test_card_name(self):
-        ce = CallbackEvent()
-        self.assertEqual(ce.card_name, None)
-        ce.event_payload = get_sample_data('createCard', 'text')
         self.assertEqual(ce.card_name, ce.event_payload['action']['data']['card']['name'])  # noqa
