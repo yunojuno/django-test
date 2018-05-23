@@ -2,7 +2,6 @@
 import datetime
 import json
 import mock
-import requests
 import responses
 
 from django.core.urlresolvers import reverse

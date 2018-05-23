@@ -11,7 +11,6 @@ from django.utils import timezone
 
 from jsonfield import JSONField
 import trello
-from requests import RequestException
 
 from trello_webhooks import settings
 from trello_webhooks import signals
