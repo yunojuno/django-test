@@ -2,6 +2,7 @@
 import json
 import logging
 
+import requests
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.template import TemplateDoesNotExist
@@ -225,7 +226,12 @@ class Webhook(models.Model):
             webhook=self,
             event_type=action,
             event_payload=body_text
-        ).save()
+        )
+        attachment = payload['action'].get('data', {}).get('attachment', {})
+        if attachment and attachment.get('url'):
+            attachment['contentType'] = event.fetch_attachment_content_type()
+            event.event_payload = json.dumps(payload)
+        event.save()
         self.touch()
         signals.callback_received.send(sender=self.__class__, event=event)
         return event
@@ -278,6 +284,21 @@ class CallbackEvent(models.Model):
     def member(self):
         """Returns 'memberCreator' JSON extracted from event_payload."""
         return self.event_payload.get('action', {}).get('memberCreator')
+
+    @property
+    def attachment(self):
+        """Returns 'attachment' JSON extracted from event_payload."""
+        return self.action_data.get('attachment') if self.action_data else None
+
+    def fetch_attachment_content_type(self):
+        """Returns the content type of the attachment if it exists.
+
+        Returns None if there is no attachment
+
+        May raise an exception if the API request to Trello fails"""
+        if self.attachment:
+            response = requests.head(self.attachment['url'])
+            return response.headers['Content-Type']
 
     @property
     def board(self):
