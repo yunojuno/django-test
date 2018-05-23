@@ -12,7 +12,8 @@ def send_to_hipchat(
     room=settings.HIPCHAT_ROOM_ID,
     sender="Trello",
     color="yellow",
-    notify=False):
+    notify=False
+):
     """
     Send a message to HipChat.
 
