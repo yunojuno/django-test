@@ -47,7 +47,8 @@ class Command(BaseCommand):
         tokens = set([w.auth_token for w in local_webhooks] + [a for a in args])
 
         # used to match webhooks when comparing with remote hooks
-        local_match = lambda h: h.id in [w.trello_id for w in local_webhooks]
+        def local_match(h):
+            return h.id in [w.trello_id for w in local_webhooks]
 
         if len(tokens) == 0:
             logger.info(u"There are no user tokens with which to check Trello.")  # noqa

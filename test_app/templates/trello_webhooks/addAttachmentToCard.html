@@ -1,0 +1,7 @@
+{% load attachment_parsing %}
+{% if action.data.attachment.contentType|is_image %}
+    <strong>{{action.memberCreator.initials}}</strong> added attachment "<a href="{{action.data.attachment.url}}"><img src="{{action.data.attachment.url}}" alt="{{action.data.attachment.name}}"></a>"
+{% else %}
+    <strong>{{action.memberCreator.initials}}</strong> added attachment "<strong><a href="{{action.data.attachment.url}}">{{action.data.attachment.name}}</a></strong>"
+{% endif %}
+{% include 'trello_webhooks/partials/card_link.html' %}

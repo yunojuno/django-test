@@ -1,0 +1,4 @@
+flake8
+mock==2.0
+coverage==4.2
+responses
