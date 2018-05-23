@@ -280,6 +280,11 @@ class CallbackEvent(models.Model):
         return self.event_payload.get('action', {}).get('memberCreator')
 
     @property
+    def attachment(self):
+        """Returns 'attachment' JSON extracted from event_payload."""
+        return self.action_data.get('attachment') if self.action_data else None
+
+    @property
     def board(self):
         """Returns 'board' JSON extracted from event_payload."""
         return self.action_data.get('board') if self.action_data else None
