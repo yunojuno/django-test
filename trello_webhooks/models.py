@@ -269,6 +269,13 @@ class CallbackEvent(models.Model):
         super(CallbackEvent, self).save(*args, **kwargs)
         return self
 
+    def resolve_content_type(self):
+        """Stores content type of attachment for addAttachmentToCard events"""
+        if self.event_type == 'addAttachmentToCard':
+            url = self.action_data['attachment']['url']
+            mimetype, encoding = mimetypes.guess_type(url)
+            self.event_payload['action']['data']['attachment']['content_type'] = mimetype  # noqa
+
     @property
     def action_data(self):
         """Returns the 'data' node from the payload."""
