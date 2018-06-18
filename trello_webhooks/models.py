@@ -2,6 +2,7 @@
 import json
 import logging
 
+import mimetypes, urllib2
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.template import TemplateDoesNotExist
@@ -302,6 +303,11 @@ class CallbackEvent(models.Model):
     def card(self):
         """Returns 'card' JSON extracted from event_payload."""
         return self.action_data.get('card') if self.action_data else None
+
+    @property
+    def content_type(self):
+        """Returns 'content_type' value extracted event_payload."""
+        return self.action_data.get('attachment', {})['content_type'] if self.event_type == 'addAttachmentToCard' else None  # noqa        
 
     @property
     def member_name(self):
