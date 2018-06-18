@@ -148,7 +148,7 @@ APPEND_SLASH = True
 
 
 # set HOSTED_ON_AWS environ var to any value
-# along with access keys etc. in order to use S3 storage 
+# along with access keys etc. in order to use S3 storage
 # if hosted on AWS.
 # You will also need the following requirements:
 # boto3==1.7.40
@@ -175,4 +175,3 @@ if HOSTED_ON_AWS:
 else:
     STATIC_URL = "/static/"
     STATIC_ROOT = path.join(PROJECT_ROOT, 'static')
-
