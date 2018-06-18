@@ -266,6 +266,8 @@ class CallbackEvent(models.Model):
     def save(self, *args, **kwargs):
         """Update timestamp"""
         self.timestamp = timezone.now()
+        # resolves content type for events with attachments
+        self.resolve_content_type()        
         super(CallbackEvent, self).save(*args, **kwargs)
         return self
 
