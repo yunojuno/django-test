@@ -1,0 +1,8 @@
+{% load test_app_tags %}
+<strong>{{action.memberCreator.initials}}</strong> added attachment 
+{% if action.data.attachment.content_type|content_category == "image" %}
+   <br><a href="{{action.data.attachment.url}}"><img src={{action.data.attachment.previewUrl}}></a>
+{% else %}
+	"<strong><a href="{{action.data.attachment.url}}">{{action.data.attachment.name}}</a></strong>"
+{% endif %}     
+{% include 'trello_webhooks/partials/card_link.html' %}
