@@ -1,0 +1,122 @@
+{
+    "action": {
+        "data": {
+            "attachment": {
+                "edgeColor": "#dcdcc4",
+                "id": "5b26c2628aa046e5ac609e22",
+                "name": "20170507_152148.jpg",
+                "previewUrl": "https://trello-attachments.s3.amazonaws.com/5b254ad021347ff3199090f5/600x450/f6f7e22db9a8319db373f6e931df1f2e/20170507_152148.jpg",
+                "previewUrl2x": "https://trello-attachments.s3.amazonaws.com/5b254ad021347ff3199090f5/1200x900/89d9879da4fda070d9acf3d908699584/20170507_152148.jpg",
+                "url": "https://trello-attachments.s3.amazonaws.com/5b25452367168b8f6788fcd6/5b254ad021347ff3199090f5/65677aa0a8285d7beb15943ded56349c/20170507_152148.jpg"
+            },
+            "board": {
+                "id": "5b25452367168b8f6788fcd6",
+                "name": "django-test",
+                "shortLink": "7s3TlFhl"
+            },
+            "card": {
+                "id": "5b254ad021347ff3199090f5",
+                "idShort": 9,
+                "name": "heyyyyy",
+                "shortLink": "eYYPfLj3"
+            },
+            "list": {
+                "id": "5b25452e74ebb10584ea76e2",
+                "name": "doing"
+            }
+        },
+        "date": "2018-06-17T20:19:46.989Z",
+        "display": {
+            "entities": {
+                "attachment": {
+                    "edgeColor": "#dcdcc4",
+                    "id": "5b26c2628aa046e5ac609e22",
+                    "link": true,
+                    "previewUrl": "https://trello-attachments.s3.amazonaws.com/5b254ad021347ff3199090f5/600x450/f6f7e22db9a8319db373f6e931df1f2e/20170507_152148.jpg",
+                    "previewUrl2x": "https://trello-attachments.s3.amazonaws.com/5b254ad021347ff3199090f5/1200x900/89d9879da4fda070d9acf3d908699584/20170507_152148.jpg",
+                    "text": "20170507_152148.jpg",
+                    "type": "attachment",
+                    "url": "https://trello-attachments.s3.amazonaws.com/5b25452367168b8f6788fcd6/5b254ad021347ff3199090f5/65677aa0a8285d7beb15943ded56349c/20170507_152148.jpg"
+                },
+                "attachmentPreview": {
+                    "edgeColor": "#dcdcc4",
+                    "id": "5b26c2628aa046e5ac609e22",
+                    "originalUrl": "https://trello-attachments.s3.amazonaws.com/5b25452367168b8f6788fcd6/5b254ad021347ff3199090f5/65677aa0a8285d7beb15943ded56349c/20170507_152148.jpg",
+                    "previewUrl": "https://trello-attachments.s3.amazonaws.com/5b254ad021347ff3199090f5/600x450/f6f7e22db9a8319db373f6e931df1f2e/20170507_152148.jpg",
+                    "previewUrl2x": "https://trello-attachments.s3.amazonaws.com/5b254ad021347ff3199090f5/1200x900/89d9879da4fda070d9acf3d908699584/20170507_152148.jpg",
+                    "type": "attachmentPreview"
+                },
+                "card": {
+                    "id": "5b254ad021347ff3199090f5",
+                    "shortLink": "eYYPfLj3",
+                    "text": "heyyyyy",
+                    "type": "card"
+                },
+                "memberCreator": {
+                    "id": "5220eca56f0063bf300039a8",
+                    "text": "Shane Carty",
+                    "type": "member",
+                    "username": "shanecarty"
+                }
+            },
+            "translationKey": "action_add_attachment_to_card"
+        },
+        "id": "5b26c2628aa046e5ac609e25",
+        "idMemberCreator": "5220eca56f0063bf300039a8",
+        "limits": {},
+        "memberCreator": {
+            "avatarHash": null,
+            "avatarUrl": null,
+            "fullName": "Shane Carty",
+            "id": "5220eca56f0063bf300039a8",
+            "initials": "SC",
+            "username": "shanecarty"
+        },
+        "type": "addAttachmentToCard"
+    },
+    "model": {
+        "closed": false,
+        "desc": "",
+        "descData": null,
+        "id": "5b25452367168b8f6788fcd6",
+        "idOrganization": null,
+        "labelNames": {
+            "black": "",
+            "blue": "",
+            "green": "",
+            "lime": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "sky": "",
+            "yellow": ""
+        },
+        "name": "django-test",
+        "pinned": false,
+        "prefs": {
+            "background": "blue",
+            "backgroundBottomColor": "#0079BF",
+            "backgroundBrightness": "dark",
+            "backgroundColor": "#0079BF",
+            "backgroundImage": null,
+            "backgroundImageScaled": null,
+            "backgroundTile": false,
+            "backgroundTopColor": "#0079BF",
+            "calendarFeedEnabled": false,
+            "canBeOrg": true,
+            "canBePrivate": true,
+            "canBePublic": true,
+            "canInvite": true,
+            "cardAging": "regular",
+            "cardCovers": true,
+            "comments": "members",
+            "invitations": "members",
+            "permissionLevel": "private",
+            "selfJoin": false,
+            "voting": "disabled"
+        },
+        "shortUrl": "https://trello.com/b/7s3TlFhl",
+        "url": "https://trello.com/b/7s3TlFhl/django-test"
+    }
+}
