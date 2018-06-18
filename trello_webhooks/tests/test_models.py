@@ -262,6 +262,13 @@ class CallbackEventModelTest(TestCase):
     def test_save(self):
         pass
 
+    def test_resolve_content_type(self):
+        ce = CallbackEvent()
+        ce.event_payload = get_sample_data('addAttachmentToCard', 'text')
+        ce.event_type = 'addAttachmentToCard'
+        ce.resolve_content_type()
+        self.assertEqual(ce.content_type, "image/jpeg")
+
     def test_action_data(self):
         ce = CallbackEvent()
         self.assertEqual(ce.action_data, None)
@@ -291,6 +298,14 @@ class CallbackEventModelTest(TestCase):
         self.assertEqual(ce.card, None)
         ce.event_payload = get_sample_data('createCard', 'text')
         self.assertEqual(ce.card, ce.event_payload['action']['data']['card'])
+
+    def test_content_type(self):
+        ce = CallbackEvent()
+        self.assertEqual(ce.content_type, None)
+        ce.event_payload = get_sample_data('addAttachmentToCard', 'text')
+        ce.event_type = 'addAttachmentToCard'
+        ce.resolve_content_type()
+        self.assertEqual(ce.content_type, ce.event_payload['action']['data']['attachment']['content_type'])  # noqa
 
     def test_member_name(self):
         ce = CallbackEvent()

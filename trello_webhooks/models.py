@@ -2,6 +2,8 @@
 import json
 import logging
 
+import mimetypes
+import urllib2
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.template import TemplateDoesNotExist
@@ -266,8 +268,17 @@ class CallbackEvent(models.Model):
     def save(self, *args, **kwargs):
         """Update timestamp"""
         self.timestamp = timezone.now()
+        # resolves content type for events with attachments
+        self.resolve_content_type()
         super(CallbackEvent, self).save(*args, **kwargs)
         return self
+
+    def resolve_content_type(self):
+        """Stores content type of attachment for addAttachmentToCard events"""
+        if self.event_type == 'addAttachmentToCard':
+            url = self.action_data['attachment']['url']
+            mimetype, encoding = mimetypes.guess_type(url)
+            self.event_payload['action']['data']['attachment']['content_type'] = mimetype  # noqa
 
     @property
     def action_data(self):
@@ -293,6 +304,11 @@ class CallbackEvent(models.Model):
     def card(self):
         """Returns 'card' JSON extracted from event_payload."""
         return self.action_data.get('card') if self.action_data else None
+
+    @property
+    def content_type(self):
+        """Returns 'content_type' value extracted event_payload."""
+        return self.action_data.get('attachment', {})['content_type'] if self.event_type == 'addAttachmentToCard' else None  # noqa
 
     @property
     def member_name(self):

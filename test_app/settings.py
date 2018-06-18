@@ -79,10 +79,8 @@ TEMPLATE_LOADERS = (
 TEMPLATE_DIRS = (
 )
 
-STATIC_URL = "/static/"
-
 PROJECT_ROOT = path.realpath(path.dirname(__file__))
-STATIC_ROOT = path.join(PROJECT_ROOT, 'static')
+BASE_DIR = path.dirname(path.dirname(path.abspath(__file__)))
 
 SECRET_KEY = "secret"
 
@@ -147,3 +145,33 @@ LOGGING = {
 ROOT_URLCONF = 'test_app.urls'
 
 APPEND_SLASH = True
+
+
+# set HOSTED_ON_AWS environ var to any value
+# along with access keys etc. in order to use S3 storage
+# if hosted on AWS.
+# You will also need the following requirements:
+# boto3==1.7.40
+# django-storages==1.6.6
+HOSTED_ON_AWS = environ.get('HOSTED_ON_AWS', False)
+
+if HOSTED_ON_AWS:
+    AWS_ACCESS_KEY_ID = environ['AWS_ACCESS_KEY_ID']
+    AWS_SECRET_ACCESS_KEY = environ['AWS_SECRET_ACCESS_KEY']
+    AWS_STORAGE_BUCKET_NAME = environ['AWS_STORAGE_BUCKET_NAME']
+    AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+    AWS_S3_OBJECT_PARAMETERS = {
+        'CacheControl': 'max-age=86400',
+    }
+    AWS_LOCATION = 'static'
+
+    STATICFILES_DIRS = [
+        path.join(BASE_DIR, 'test_app/static'),
+    ]
+    STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    STATICFILES_LOCATION = 'static'
+
+else:
+    STATIC_URL = "/static/"
+    STATIC_ROOT = path.join(PROJECT_ROOT, 'static')
