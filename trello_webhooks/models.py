@@ -319,6 +319,16 @@ class CallbackEvent(models.Model):
         """Return full path to render template, based on event_type."""
         return 'trello_webhooks/%s.html' % self.event_type
 
+    @property
+    def attachment(self):
+        """Return url of attachment if it exists"""
+        return self.action_data.get('attachment', {}).get('url') if self.action_data else None
+
+    @property
+    def attachment_content_type(self):
+        """Return extension of attachment"""
+        return self.attachment.split('.')[-1] if self.attachment else None
+
     def render(self):
         """Render the event using an HTML template.
 
