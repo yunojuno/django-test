@@ -266,6 +266,8 @@ class CallbackEvent(models.Model):
     def save(self, *args, **kwargs):
         """Update timestamp"""
         self.timestamp = timezone.now()
+        if self.attachment_content_type:
+            self.action_data['attachment']['content_type'] = self.attachment_content_type
         super(CallbackEvent, self).save(*args, **kwargs)
         return self
 
@@ -321,13 +323,18 @@ class CallbackEvent(models.Model):
 
     @property
     def attachment(self):
-        """Return url of attachment if it exists"""
-        return self.action_data.get('attachment', {}).get('url') if self.action_data else None
+        """Return attachment if it exists."""
+        return self.action_data.get('attachment') if self.action_data else None
+
+    @property
+    def attachment_url(self):
+        """Return url of attachment if it exists."""
+        return self.attachment.get('url') if self.attachment else None
 
     @property
     def attachment_content_type(self):
-        """Return extension of attachment"""
-        return self.attachment.split('.')[-1] if self.attachment else None
+        """Return extension of attachment."""
+        return self.attachment_url.split('.')[-1] if self.attachment else None
 
     def render(self):
         """Render the event using an HTML template.

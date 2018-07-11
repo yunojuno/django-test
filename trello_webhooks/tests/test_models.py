@@ -320,10 +320,17 @@ class CallbackEventModelTest(TestCase):
         ce = CallbackEvent()
         self.assertEqual(ce.action_data, None)
         ce.event_payload = get_sample_data('addAttachmentToCard', 'text')
-        self.assertEqual(ce.attachment, ce.event_payload['action']['data']['attachment']['url'])
+        self.assertEqual(ce.attachment, ce.event_payload['action']['data']['attachment'])
 
     def test_attachment_content_type(self):
         ce = CallbackEvent()
         self.assertEqual(ce.action_data, None)
         ce.event_payload = get_sample_data('addAttachmentToCard', 'text')
         self.assertEqual(ce.attachment_content_type, 'undefined')
+
+    def test_save_add_attachment_event(self):
+        wb = Webhook(auth_token="ABC").save(sync=False)
+        ce = CallbackEvent(
+            webhook=wb,
+            event_payload=get_sample_data('addAttachmentToCard', 'text')).save()
+        self.assertEqual(ce.attachment_content_type, ce.action_data['attachment']['content_type'])
