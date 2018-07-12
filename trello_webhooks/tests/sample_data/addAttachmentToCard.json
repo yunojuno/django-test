@@ -19,8 +19,8 @@
                 "id": "5476fb7437746ac807afe2a5"
             },
             "attachment": {
-                "url": "fake/path/someFile.undefined",
-                "name": "someFile.undefined",
+                "url": "fake/path/someFile.txt",
+                "name": "someFile.txt",
                 "id": "55762ba23457e0e95181e792"
             }
         },

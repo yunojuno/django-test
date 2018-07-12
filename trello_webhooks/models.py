@@ -9,6 +9,7 @@ from django.template.loader import render_to_string
 from django.utils import timezone
 
 from jsonfield import JSONField
+import mimetypes
 import trello
 
 from trello_webhooks import settings
@@ -334,7 +335,7 @@ class CallbackEvent(models.Model):
     @property
     def attachment_content_type(self):
         """Return extension of attachment."""
-        return self.attachment_url.split('.')[-1] if self.attachment else None
+        return mimetypes.guess_type(self.attachment_url)[0] if self.attachment else None
 
     def render(self):
         """Render the event using an HTML template.
