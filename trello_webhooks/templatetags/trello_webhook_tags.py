@@ -52,3 +52,8 @@ def trello_updates(new, old):
         return {k: (v, new[k]) for k, v in old.iteritems()}
     except KeyError:
         return {k: (v, None) for k, v in old.iteritems()}
+
+
+@register.filter('startswith')
+def startswith(text, start_value):
+    return text.startswith(start_value)
