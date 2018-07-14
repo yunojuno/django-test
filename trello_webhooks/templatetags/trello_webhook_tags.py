@@ -56,4 +56,11 @@ def trello_updates(new, old):
 
 @register.filter('startswith')
 def startswith(text, start_value):
+    """Determine if the attribute starts with a certain value.
+       Args:
+           text: str, the attribute value
+           start_value: str
+
+       Returns: True if the attribute starts with the given value, False otherwise
+       """
     return text.startswith(start_value)
