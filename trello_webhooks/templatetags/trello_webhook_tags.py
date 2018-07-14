@@ -52,3 +52,15 @@ def trello_updates(new, old):
         return {k: (v, new[k]) for k, v in old.iteritems()}
     except KeyError:
         return {k: (v, None) for k, v in old.iteritems()}
+
+
+@register.filter('startswith')
+def startswith(text, start_value):
+    """Determine if the attribute starts with a certain value.
+       Args:
+           text: str, the attribute value
+           start_value: str
+
+       Returns: True if the attribute starts with the given value, False otherwise
+       """
+    return text.startswith(start_value)

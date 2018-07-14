@@ -9,6 +9,7 @@ from django.template.loader import render_to_string
 from django.utils import timezone
 
 from jsonfield import JSONField
+import mimetypes
 import trello
 
 from trello_webhooks import settings
@@ -266,6 +267,8 @@ class CallbackEvent(models.Model):
     def save(self, *args, **kwargs):
         """Update timestamp"""
         self.timestamp = timezone.now()
+        if self.attachment_content_type:
+            self.action_data['attachment']['content_type'] = self.attachment_content_type
         super(CallbackEvent, self).save(*args, **kwargs)
         return self
 
@@ -318,6 +321,24 @@ class CallbackEvent(models.Model):
     def template(self):
         """Return full path to render template, based on event_type."""
         return 'trello_webhooks/%s.html' % self.event_type
+
+    @property
+    def attachment(self):
+        """Return attachment if it exists."""
+        return self.action_data.get('attachment') if self.action_data else None
+
+    @property
+    def attachment_url(self):
+        """Return url of attachment if it exists."""
+        return self.attachment.get('url') if self.attachment else None
+
+    @property
+    def attachment_content_type(self):
+        """Return the MIME type of attachment."""
+        if self.attachment:
+            content_type, _ = mimetypes.guess_type(self.attachment_url)
+            return content_type
+        return None
 
     def render(self):
         """Render the event using an HTML template.
