@@ -334,8 +334,11 @@ class CallbackEvent(models.Model):
 
     @property
     def attachment_content_type(self):
-        """Return extension of attachment."""
-        return mimetypes.guess_type(self.attachment_url)[0] if self.attachment else None
+        """Return the MIME type of attachment."""
+        if self.attachment:
+            content_type, _ = mimetypes.guess_type(self.attachment_url)
+            return content_type
+        return None
 
     def render(self):
         """Render the event using an HTML template.
