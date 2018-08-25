@@ -2,11 +2,11 @@
 import datetime
 import json
 import mock
+import requests
+import time
 
 from django.core.urlresolvers import reverse
 from django.test import TestCase
-
-import trello
 
 from trello_webhooks.models import Webhook, CallbackEvent
 from trello_webhooks.settings import (
@@ -167,6 +167,7 @@ class WebhookModelTests(TestCase):
     def test_touch(self):
         hook = Webhook().save(sync=False)
         self.assertTrue(hook.created_at == hook.last_updated_at)
+        time.sleep(0.1)
         hook.touch()
         self.assertTrue(hook.last_updated_at > hook.created_at)
 
@@ -184,6 +185,7 @@ class WebhookModelTests(TestCase):
         self.assertEqual(hook.auth_token, '')
         timestamp = hook.created_at
         # and that saving again updates the last_updated_at
+        time.sleep(0.1)
         hook.save(sync=False)
         self.assertEqual(hook.created_at, timestamp)
         self.assertNotEqual(hook.last_updated_at, timestamp)
@@ -315,3 +317,22 @@ class CallbackEventModelTest(TestCase):
         self.assertEqual(ce.card_name, None)
         ce.event_payload = get_sample_data('createCard', 'text')
         self.assertEqual(ce.card_name, ce.event_payload['action']['data']['card']['name'])  # noqa
+
+    def test_attachment_type(self):
+        ce = CallbackEvent()
+        ce.event_payload = get_sample_data('addAttachmentToCard', 'text')
+        ce.event_type = 'addAttachmentToCard'
+        with mock.patch.object(requests, 'get') as get_mock:
+            get_mock.return_value = mock_response = mock.Mock()
+            mock_response.status_code = 200
+            mock_response.headers = {'content-type': 'image/png'}
+            self.assertEqual(ce._attachment_type(), 'image')
+        with mock.patch.object(requests, 'get') as get_mock:
+            get_mock.return_value = mock_response = mock.Mock()
+            mock_response.status_code = 404
+            self.assertEqual(ce._attachment_type(), None)
+        with mock.patch.object(requests, 'get') as get_mock:
+            get_mock.return_value = mock_response = mock.Mock()
+            mock_response.status_code = 200
+            mock_response.headers = {'content-type': 'text/html'}
+            self.assertEqual(ce._attachment_type(), 'text')
