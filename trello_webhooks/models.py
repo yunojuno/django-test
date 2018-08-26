@@ -265,7 +265,13 @@ class CallbackEvent(models.Model):
         )
 
     def save(self, *args, **kwargs):
-        """Update timestamp"""
+        """Update timestamp and add attachment type to event payload if event type is adding an attachment."""
+        if self.event_type == 'addAttachmentToCard':
+            (self.event_payload
+                .get('action')
+                .get('data')
+                .get('attachment')['type']) = self._attachment_type()
+
         self.timestamp = timezone.now()
         super(CallbackEvent, self).save(*args, **kwargs)
         return self

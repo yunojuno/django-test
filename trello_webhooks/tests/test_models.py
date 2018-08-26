@@ -261,9 +261,6 @@ class CallbackEventModelTest(TestCase):
     def test_default_properties(self):
         pass
 
-    def test_save(self):
-        pass
-
     def test_action_data(self):
         ce = CallbackEvent()
         self.assertEqual(ce.action_data, None)
@@ -336,3 +333,15 @@ class CallbackEventModelTest(TestCase):
             mock_response.status_code = 200
             mock_response.headers = {'content-type': 'text/html'}
             self.assertEqual(ce._attachment_type(), 'text')
+
+    def test_save(self):
+        hook = Webhook().save(sync=False)
+        ce = CallbackEvent(webhook=hook, event_type='addAttachmentToCard')
+        ce.event_payload = get_sample_data('addAttachmentToCard', 'text')
+        with mock.patch.object(requests, 'get') as get_mock:
+            get_mock.return_value = mock_response = mock.Mock()
+            mock_response.status_code = 200
+            mock_response.headers = {'content-type': 'image/png'}
+            ce.save()
+
+        self.assertEqual(ce.event_payload['action']['data']['attachment']['type'], 'image')
