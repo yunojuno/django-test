@@ -258,65 +258,67 @@ class WebhookModelTests(TestCase):
 
 class CallbackEventModelTest(TestCase):
 
+    def setUp(self):
+        self.ce = CallbackEvent()
+
     def test_default_properties(self):
-        pass
+        ce = self.ce
+        self.assertEqual(ce.action_data, None)
+        self.assertEqual(ce.board, None)
+        self.assertEqual(ce.list, None)
+        self.assertEqual(ce.card, None)
+        self.assertEqual(ce.member_name, None)
+        self.assertEqual(ce.board_name, None)
+        self.assertEqual(ce.list_name, None)
+        self.assertEqual(ce.card_name, None)
 
     def test_action_data(self):
-        ce = CallbackEvent()
-        self.assertEqual(ce.action_data, None)
+        ce = self.ce
         ce.event_payload = get_sample_data('createCard', 'text')
         self.assertEqual(ce.action_data, ce.event_payload['action']['data'])
 
     def test_member(self):
-        ce = CallbackEvent()
-        self.assertEqual(ce.action_data, None)
+        ce = self.ce
         ce.event_payload = get_sample_data('createCard', 'text')
         self.assertEqual(ce.member, ce.event_payload['action']['memberCreator'])
 
     def test_board(self):
-        ce = CallbackEvent()
-        self.assertEqual(ce.board, None)
+        ce = self.ce
         ce.event_payload = get_sample_data('createCard', 'text')
         self.assertEqual(ce.board, ce.event_payload['action']['data']['board'])
 
     def test_list(self):
-        ce = CallbackEvent()
-        self.assertEqual(ce.list, None)
+        ce = self.ce
         ce.event_payload = get_sample_data('createCard', 'text')
         self.assertEqual(ce.list, ce.event_payload['action']['data']['list'])
 
     def test_card(self):
-        ce = CallbackEvent()
-        self.assertEqual(ce.card, None)
+        ce = self.ce
         ce.event_payload = get_sample_data('createCard', 'text')
         self.assertEqual(ce.card, ce.event_payload['action']['data']['card'])
 
     def test_member_name(self):
-        ce = CallbackEvent()
-        self.assertEqual(ce.member_name, None)
+        ce = self.ce
         ce.event_payload = get_sample_data('createCard', 'text')
         self.assertEqual(ce.member_name, ce.event_payload['action']['memberCreator']['fullName'])  # noqa
 
     def test_board_name(self):
-        ce = CallbackEvent()
-        self.assertEqual(ce.board_name, None)
+        ce = self.ce
         ce.event_payload = get_sample_data('createCard', 'text')
         self.assertEqual(ce.board_name, ce.event_payload['action']['data']['board']['name'])  # noqa
 
     def test_list_name(self):
-        ce = CallbackEvent()
-        self.assertEqual(ce.list_name, None)
+        ce = self.ce
         ce.event_payload = get_sample_data('createCard', 'text')
         self.assertEqual(ce.list_name, ce.event_payload['action']['data']['list']['name'])  # noqa
 
     def test_card_name(self):
-        ce = CallbackEvent()
-        self.assertEqual(ce.card_name, None)
+        ce = self.ce
         ce.event_payload = get_sample_data('createCard', 'text')
         self.assertEqual(ce.card_name, ce.event_payload['action']['data']['card']['name'])  # noqa
 
     def test_attachment_type(self):
-        ce = CallbackEvent()
+        ce = self.ce
         ce.event_payload = get_sample_data('addAttachmentToCard', 'text')
         ce.event_type = 'addAttachmentToCard'
         with mock.patch.object(requests, 'get') as get_mock:
@@ -324,12 +326,12 @@ class CallbackEventModelTest(TestCase):
             mock_response.status_code = 200
             mock_response.headers = {'content-type': 'image/png'}
             self.assertEqual(ce._attachment_type(), 'image')
-        with mock.patch.object(requests, 'get') as get_mock:
-            get_mock.return_value = mock_response = mock.Mock()
+
+            # Check bad response
             mock_response.status_code = 404
             self.assertEqual(ce._attachment_type(), None)
-        with mock.patch.object(requests, 'get') as get_mock:
-            get_mock.return_value = mock_response = mock.Mock()
+
+            # Check other input then image
             mock_response.status_code = 200
             mock_response.headers = {'content-type': 'text/html'}
             self.assertEqual(ce._attachment_type(), 'text')
