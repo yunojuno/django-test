@@ -1,0 +1,111 @@
+{
+    "action": {
+          "id": "55411859be21b8ad7dcd4c78",
+          "idMemberCreator": "54e20f22ca5e45bc555c1cdb",
+          "data": {
+              "board": {
+                "shortLink": "nC8QJJoZ",
+                "name": "Trello Development",
+                "id": "4d5ea62fd76aa1136000000c"
+              },
+              "card": {
+                "shortLink": "NIRpzVDM",
+                "idShort": 1211,
+                "name": "What can you expect from this board?",
+                "id": "4f7dcc310113192a307f347d"
+              },
+              "attachment": {
+                "previewUrl2x": "https://trello-attachments.s3.amazonaws.com/4f7dcc310113192a307f347d/1200x1176/728412168dacbfff02e9414d84a0356f/trello-logo.png",
+                "previewUrl": "https://trello-attachments.s3.amazonaws.com/4f7dcc310113192a307f347d/600x588/09dcbeb01f2de5d29a513c6e3aad3649/trello-logo.png",
+                "url": "https://trello-attachments.s3.amazonaws.com/4f7dcc310113192a307f347d/1294x1268/219cc6eb9c9b7b2ef8b1251c90a4184a/trello-logo.png",
+                "name": "trello-logo.png",
+                "id": "55411857be21b8ad7dcd4c70"
+              }
+          },
+          "type": "addAttachmentToCard",
+          "date": "2015-04-29T17:43:53.614Z",
+          "memberCreator": {
+              "id": "54e20f22ca5e45bc555c1cdb",
+              "avatarHash": "448c93683331562616e24a04b09d41fa",
+              "fullName": "Michelle Bearheart",
+              "initials": "MB",
+              "username": "michellebearheart"
+          },
+          "display": {
+                "translationKey": "action_add_attachment_to_card",
+                "entities": {
+                    "attachment": {
+                      "type": "attachment",
+                      "id": "55411857be21b8ad7dcd4c70",
+                      "previewUrl": "https://trello-attachments.s3.amazonaws.com/4f7dcc310113192a307f347d/600x588/09dcbeb01f2de5d29a513c6e3aad3649/trello-logo.png",
+                      "previewUrl2x": "https://trello-attachments.s3.amazonaws.com/4f7dcc310113192a307f347d/1200x1176/728412168dacbfff02e9414d84a0356f/trello-logo.png",
+                      "link": true,
+                      "text": "trello-logo.png",
+                      "url": "https://trello-attachments.s3.amazonaws.com/4f7dcc310113192a307f347d/1294x1268/219cc6eb9c9b7b2ef8b1251c90a4184a/trello-logo.png"
+                    },
+                    "attachmentPreview": {
+                      "type": "attachmentPreview",
+                      "originalUrl": "https://trello-attachments.s3.amazonaws.com/4f7dcc310113192a307f347d/1294x1268/219cc6eb9c9b7b2ef8b1251c90a4184a/trello-logo.png",
+                      "id": "55411857be21b8ad7dcd4c70",
+                      "previewUrl": "https://trello-attachments.s3.amazonaws.com/4f7dcc310113192a307f347d/600x588/09dcbeb01f2de5d29a513c6e3aad3649/trello-logo.png",
+                      "previewUrl2x": "https://trello-attachments.s3.amazonaws.com/4f7dcc310113192a307f347d/1200x1176/728412168dacbfff02e9414d84a0356f/trello-logo.png"
+                    },
+                    "card": {
+                      "type": "card",
+                      "id": "4f7dcc310113192a307f347d",
+                      "shortLink": "NIRpzVDM",
+                      "text": "What can you expect from this board?"
+                    },
+                    "memberCreator": {
+                      "type": "member",
+                      "id": "54e20f22ca5e45bc555c1cdb",
+                      "username": "michellebearheart",
+                      "text": "Michelle Bearheart"
+                    }
+              }
+        }
+    },
+    "model": {
+        "id": "5476fab52086e26047fa328c",
+        "name": "Django Trello Webhooks Test Board",
+        "desc": "",
+        "descData": null,
+        "closed": false,
+        "idOrganization": null,
+        "pinned": false,
+        "url": "https://trello.com/b/TAAnwdP9/django-trello-webhooks-test-board",
+        "shortUrl": "https://trello.com/b/TAAnwdP9",
+        "prefs": {
+            "permissionLevel": "public",
+            "voting": "disabled",
+            "comments": "members",
+            "invitations": "members",
+            "selfJoin": false,
+            "cardCovers": true,
+            "cardAging": "regular",
+            "calendarFeedEnabled": false,
+            "background": "blue",
+            "backgroundColor": "#0079BF",
+            "backgroundImage": null,
+            "backgroundImageScaled": null,
+            "backgroundTile": false,
+            "backgroundBrightness": "unknown",
+            "canBePublic": true,
+            "canBeOrg": true,
+            "canBePrivate": true,
+            "canInvite": true
+        },
+        "labelNames": {
+            "green": "",
+            "yellow": "",
+            "orange": "",
+            "red": "",
+            "purple": "",
+            "blue": "",
+            "pink": "",
+            "sky": "",
+            "lime": "",
+            "black": ""
+        }
+    }
+}
