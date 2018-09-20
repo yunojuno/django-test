@@ -1,6 +1,7 @@
 # # -*- coding: utf-8 -*-
 import json
 import logging
+from mimetypes import MimeTypes
 
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -264,7 +265,10 @@ class CallbackEvent(models.Model):
         )
 
     def save(self, *args, **kwargs):
-        """Update timestamp"""
+        """Add 'content-type' to attachment (if it exists) and update timestamp"""
+        if self.attachment:
+            content_type = MimeTypes().guess_type(self.attachment.get('name'))[0]
+            self.attachment['content-type'] = content_type
         self.timestamp = timezone.now()
         super(CallbackEvent, self).save(*args, **kwargs)
         return self
@@ -293,6 +297,11 @@ class CallbackEvent(models.Model):
     def card(self):
         """Returns 'card' JSON extracted from event_payload."""
         return self.action_data.get('card') if self.action_data else None
+
+    @property
+    def attachment(self):
+        """Returns 'attachment' JSON extracted from event_payload."""
+        return self.action_data.get('attachment') if self.action_data else None
 
     @property
     def member_name(self):

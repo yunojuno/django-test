@@ -1,0 +1,2 @@
+{% load trello_webhook_tags %}<strong>{{action.memberCreator.initials}}</strong> added attachment {{action.data.attachment|attachment_html|safe}}
+{% include 'trello_webhooks/partials/card_link.html' %}

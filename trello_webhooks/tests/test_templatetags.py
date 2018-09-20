@@ -4,7 +4,8 @@ from django.test import TestCase
 from trello_webhooks.settings import TRELLO_API_KEY
 from trello_webhooks.templatetags.trello_webhook_tags import (
     trello_api_key,
-    trello_updates
+    trello_updates,
+    attachment_html
 )
 
 
@@ -27,4 +28,19 @@ class TemplateTagTests(TestCase):
         self.assertEqual(
             trello_updates(new, old),
             {'pos': (1, None)}
+        )
+
+    def test_attachment_html(self):
+        # attachment is image
+        data = {'name': 'abc', 'url': 'xyz', 'content-type': 'image/png'}
+        self.assertEqual(
+            attachment_html(data),
+            "<br/><a href='xyz'><img src='xyz'></a>"
+        )
+
+        # attachment is not an image
+        data = {'name': 'abc', 'url': 'xyz', 'content-type': 'text/plain'}
+        self.assertEqual(
+            attachment_html(data),
+            '"<strong><a href="xyz">abc</a></strong>"'
         )

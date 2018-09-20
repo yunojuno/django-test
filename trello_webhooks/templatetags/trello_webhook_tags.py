@@ -52,3 +52,16 @@ def trello_updates(new, old):
         return {k: (v, new[k]) for k, v in old.iteritems()}
     except KeyError:
         return {k: (v, None) for k, v in old.iteritems()}
+
+
+@register.filter
+def attachment_html(attachment_data):
+    """
+    Return appropriate HTML to render link to attachment dependent
+    upon the content-type of the attachment.
+    """
+    url = attachment_data.get('url')
+    name = attachment_data.get('name')
+    if attachment_data.get('content-type')[:6] == 'image/':
+        return "<br/><a href='%s'><img src='%s'></a>" % (url, url)
+    return '"<strong><a href="%s">%s</a></strong>"' % (url, name)
