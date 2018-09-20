@@ -38,7 +38,7 @@ def on_callback_received(sender, **kwargs):
     if settings.HIPCHAT_ENABLED:
         logger.debug(
             u"Message sent to HipChat [%s]: %r",
-            send_to_hipchat(html), event, event.webhook
+            send_to_hipchat(html), (event, event.webhook)
         )
     else:
         logger.debug(
