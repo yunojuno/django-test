@@ -1,5 +1,6 @@
 # # -*- coding: utf-8 -*-
 import logging
+import mimetypes
 
 from django.conf import settings
 from django.contrib.postgres.fields import JSONField
@@ -270,6 +271,11 @@ class CallbackEvent(models.Model):
     def save(self, *args, **kwargs):
         """Update timestamp"""
         self.timestamp = timezone.now()
+
+        # Update action_data to contain attachment contenttype if exists
+        if self.event_type == u'addAttachmentToCard' and not self.action_data.get('attachment').get('contenttype'):
+            self.action_data['attachment']['contenttype'] = self.get_attachment_contenttype()
+
         super(CallbackEvent, self).save(*args, **kwargs)
         return self
 
@@ -322,6 +328,11 @@ class CallbackEvent(models.Model):
     def template(self):
         """Return full path to render template, based on event_type."""
         return 'trello_webhooks/%s.html' % self.event_type
+
+    def get_attachment_contenttype(self):
+        """Return attachment mimetype (for example, 'image/png') or None"""
+        attachment = self.action_data.get('attachment', {}).get('url')
+        return mimetypes.guess_type(attachment)[0] if attachment else None
 
     def render(self):
         """Render the event using an HTML template.
