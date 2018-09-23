@@ -1,6 +1,7 @@
 # Template tags used in BackOffice only
 from django import template
 from django.conf import settings
+from django.utils.safestring import mark_safe
 
 register = template.Library()
 
@@ -51,3 +52,19 @@ def trello_updates(new, old):
         return {k: (v, new[k]) for k, v in old.iteritems()}
     except KeyError:
         return {k: (v, None) for k, v in old.iteritems()}
+
+
+@register.filter
+def render_attachment(attachment):
+    """Render attachment with an img tag if it's an image, otherwise
+    just return a link.
+    """
+    if attachment['contenttype'].split('/')[0] == 'image':
+        # Wrap the url with img tag
+        return mark_safe(
+            '<a href="%(url)s" target="_blank><img src="%(url)s"></a>' % {'url': attachment['url']}
+        )
+
+    return mark_safe(
+        '<strong><a href="%(url)s" target="_blank>%(url)s</a></strong>' % {'url': attachment['url']}
+    )
